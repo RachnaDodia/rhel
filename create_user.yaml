@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - user:
+     name: johnd
+     comment: "John Doe"
+     uid: 1040
+  - name: Change file ownership, group and permissions
+    file:
+     path: /tmp/rach
+     owner: johnd
+     mode: '0644'
