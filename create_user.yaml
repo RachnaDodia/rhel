@@ -5,7 +5,7 @@
      name: johnd
      comment: "John Doe"
      uid: 1040
-     password: "{{ 'password' | password_hash('sha512', 'mysecret') }}"
+     password: "{{ 'rachna' | password_hash('sha512', 'mysecret') }}"
   - name: Change file ownership, group and permissions
     file:
      path: /tmp/rach
