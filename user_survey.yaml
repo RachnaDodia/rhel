@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+  - user:
+     name: "{{ user }}"
+     uid: 1040
