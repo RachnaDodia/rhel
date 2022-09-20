@@ -1,0 +1,10 @@
+---
+- name: Harden the system
+  hosts: all
+  tasks:
+  - name: snmpd service
+    command: sudo yum install net-snmp
+  - name: Set the snmpd service to automatic start on boot
+    command: sudo systemctl enable snmpd
+  - name: Ensure NIS Client is not installed
+    command: sudo yum remove ypbind
