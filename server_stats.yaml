@@ -1,0 +1,9 @@
+---
+- name: Collect server stats
+  hosts: all
+  tasks:
+   - name: Stats
+     shell: ./checks.sh
+     args:
+       chdir: /root
+     ignore_errors: yes
