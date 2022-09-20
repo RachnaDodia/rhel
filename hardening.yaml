@@ -11,6 +11,8 @@
      name: httpd
      state: latest
   - name: Set the snmpd service to automatic start on boot
-    command: sudo systemctl enable snmpd
+    service:
+     name: snmpd
+     enabled: yes
   - name: Ensure NIS Client is not installed
     command: sudo yum remove ypbind
