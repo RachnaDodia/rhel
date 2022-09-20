@@ -1,0 +1,2 @@
+# rhel
+userdel -r johnd
