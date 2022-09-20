@@ -2,10 +2,14 @@
 - name: Harden the system
   hosts: all
   tasks:
-  - name: snmpd service
+  - name: Ensure latest version of snmpd service is installed
     yum:
      name: net-snmp
      state: latest
+   - name: Ensure latest version of HTTPD is installed
+     yum:
+      name: httpd
+      state: latest
   - name: Set the snmpd service to automatic start on boot
     command: sudo systemctl enable snmpd
   - name: Ensure NIS Client is not installed
