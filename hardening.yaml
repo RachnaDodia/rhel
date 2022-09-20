@@ -14,5 +14,8 @@
     service:
      name: snmpd
      enabled: yes
+    ignore_errors: yes
   - name: Ensure NIS Client is not installed
-    command: sudo yum remove ypbind
+    yum:
+     name: ypbind
+     state: absent
