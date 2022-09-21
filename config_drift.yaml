@@ -3,4 +3,4 @@
   gather_facts: no
   tasks:
     - name: "Only show diff between test1.txt & test2.txt" 
-      command: diff -w /tmp/test1.txt /tmp/test2.txt > /tmp/config_drift
+      shell: diff -w /tmp/test1.txt /tmp/test2.txt > /tmp/config_drift
