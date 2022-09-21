@@ -2,5 +2,6 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: "Only show diff between test1.txt & test2.txt" 
-      shell: diff -w /tmp/test1.txt /tmp/test2.txt > /tmp/config_drift
+    - name: "Only show diff between Pre Patching and Post Patching config files" 
+      shell: diff -w /tmp/prepatch.txt /tmp/postpatch.txt > /tmp/config_drift
+      ignore_errors: yes
