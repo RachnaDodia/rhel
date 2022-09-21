@@ -1,11 +1,6 @@
 ---
 - hosts: all
   gather_facts: no
-
   tasks:
     - name: "Only show diff between test1.txt & test2.txt" 
-      copy:
-        src: /tmp/test2.txt
-        dest: /tmp/test1.txt
-      check_mode: yes
-      diff: yes
+      command: diff -w /tmp/test1.txt /tmp/test2.txt > /tmp/config_drift
