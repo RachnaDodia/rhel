@@ -1,0 +1,7 @@
+---
+- name: Patching failed
+  hosts: all
+  tasks:
+  - name: Patching failed
+    debug:
+      msg: Patching failed
