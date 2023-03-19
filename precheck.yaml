@@ -1,0 +1,13 @@
+---
+- name: Precheck server
+  hosts: "{{ ip }}"
+  tasks:
+   - name: Give execute permission to precheck  script
+     shell: chmod 777 precheck.sh
+     args:
+       chdir: /root
+   - name: Precheck
+     shell: ./precheck.sh
+     args:
+       chdir: /root
+     ignore_errors: yes

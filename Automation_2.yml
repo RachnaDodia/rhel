@@ -1,0 +1,13 @@
+---
+- name: Multiple commands
+  hosts: "{{ ip }}"
+  tasks:
+   - name: Give execute permission to automation_2 script
+     shell: chmod 777 automation_2.sh
+     args:
+       chdir: /root
+   - name: Execute automation_2.sh
+     shell: ./automation_2.sh
+     args:
+       chdir: /root
+     ignore_errors: yes

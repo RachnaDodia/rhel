@@ -1,0 +1,6 @@
+---
+- name: Read hugepages file on server
+  hosts: "{{ ip }}"
+  tasks:
+   - name: Read hugepages file on server
+     shell:  cat /proc/sys/vm/nr_hugepages > /usr/automation_1.txt

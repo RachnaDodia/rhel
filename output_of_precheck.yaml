@@ -1,0 +1,8 @@
+---
+- name: Output of script
+  hosts: "{{ ip }}"
+  tasks:
+   - name: Copy the output of the precheck script to the defined target
+     shell: cp /tmp/rebootprecheck.txt /var/log/rebootprecheck_`date +%Y_%m_%d_%H`_.txt
+   - name: Display output location of the precheck script
+     shell: echo The output location of the precheck script is /var/log/rebootprecheck_`date +%Y_%m_%d_%H`_.txt
