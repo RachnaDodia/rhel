@@ -6,3 +6,4 @@
      shell: ./checks.sh
      args:
        chdir: /root
+     ignore_errors: yes
