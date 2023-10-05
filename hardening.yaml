@@ -1,6 +1,6 @@
 ---
 - name: Harden the system
-  hosts: all
+  hosts: web
   tasks:
   - name: Ensure latest version of snmpd service is installed
     yum:
