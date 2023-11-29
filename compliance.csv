@@ -1,5 +1,5 @@
 Plugin,Plugin Name,Severity,IP Address,Plugin Output,First Discovered,Last Observed
-1000309,1.7.1.4 Ensure the SELinux state is enforcing,Non Compliant,10.4.8.117,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
+1000309,1.7.1.4 Ensure the SELinux state is enforcing,Non Compliant,192.168.40.120,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
 
 Information: Set SELinux to enable when the system is booted.
 
