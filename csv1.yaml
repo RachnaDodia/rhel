@@ -7,5 +7,6 @@
           shell: cat compliance.csv |grep 1000309 |grep "Non Compliant"
           register: result
         - name: check 
-          debug: result
+          debug: 
+            var: result
    
