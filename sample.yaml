@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - name: Check if test.csv exists
+      ansible.builtin.stat:
+        path: test.csv
+      register: file_stat
+
+    - name: Ensure test.csv exists
+      ansible.builtin.fail:
+        msg: "The test.csv file is not present"
+      when: not file_stat.stat.exists
+
+    - name: Read the data from csv file
+      ansible.builtin.shell: awk -F',' 'NR>1 {gsub(/"/, "", $1); print $1}' test.csv
+      register: plugin_output
+      when: file_stat.stat.exists
+
+    - name: Debug the output
+      ansible.builtin.debug:
+        msg: "{{ plugin_output.stdout_lines }}"
+      when: plugin_output.rc == 0 and file_stat.stat.exists
