@@ -21,12 +21,19 @@
         msg: "{{ plugin_output.stdout_lines }}"
       when: plugin_output.rc == 0 and file_stat.stat.exists
 
-    - name: Print success message for Plugin 393 and Compliant severity
-      ansible.builtin.debug:
-        msg: "Success! Plugin 393 with Compliant severity is present in the CSV file."
-      when: "'393,Compliant' in plugin_severity_output.stdout_lines and file_stat.stat.exists"
+    - name: Read the data from csv file
+      ansible.builtin.shell: awk -F',' 'NR>1 {gsub(/"/, "", $1","$3); print $1}' test.csv
+      register: plugin_severity_output
+      when: file_stat.stat.exists
 
-    - name: Print success message for Plugin 446 and noncompliant severity
+    - name: Debug the output for noncompliant severity
       ansible.builtin.debug:
-        msg: "Success! Plugin 446 with noncompliant severity is present in the CSV file."
-      when: "'446,noncompliant' in plugin_severity_output.stdout_lines and file_stat.stat.exists"
+        msg: "Plugin {{ item }} has noncompliant severity."
+      with_items: "{{ plugin_severity_output.stdout_lines }}"
+      when: "'noncompliant' in item and file_stat.stat.exists"
+
+    - name: Debug the output
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      with_items: "{{ plugin_severity_output.stdout_lines }}"
+      when: "'noncompliant' not in item and file_stat.stat.exists"
