@@ -20,3 +20,13 @@
       ansible.builtin.debug:
         msg: "{{ plugin_output.stdout_lines }}"
       when: plugin_output.rc == 0 and file_stat.stat.exists
+
+    - name: Print success message for Plugin 393 and Compliant severity
+      ansible.builtin.debug:
+        msg: "Success! Plugin 393 with Compliant severity is present in the CSV file."
+      when: "'393,Compliant' in plugin_severity_output.stdout_lines and file_stat.stat.exists"
+
+    - name: Print success message for Plugin 446 and noncompliant severity
+      ansible.builtin.debug:
+        msg: "Success! Plugin 446 with noncompliant severity is present in the CSV file."
+      when: "'446,noncompliant' in plugin_severity_output.stdout_lines and file_stat.stat.exists"
