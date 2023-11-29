@@ -12,5 +12,5 @@
      vars:
        csvline: "{{ lookup('ansible.builtin.csvfile', file='test.csv', delimiter=',') }}"
    - name: debug csv
-     ansible.builtin.debug: msg="value is {{ sev}}"
+     ansible.builtin.debug: msg="value is {{ sev }}"
  
