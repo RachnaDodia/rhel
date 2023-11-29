@@ -12,11 +12,11 @@
         - name: check 
           set_fact: 
             h: "{{ result1.stdout_lines }}" 
-          when: result1.stdout_lines != ""
+          when: result1.stdout_lines != []
         - name: remediate
           debug:
             var: h
           delegate_to: h
-          when: result1.stdout_lines != ""
+          when: result1.stdout_lines != []
           
    
