@@ -3,15 +3,15 @@
   hosts: all
   tasks:
    - name: test
-     ansible.builtin.debug: msg="value is {{ lookup('ansible.builtin.csvfile', 'Plugin file=test.csv delimiter=,') }}"
+#     ansible.builtin.debug: msg="value is {{ lookup('ansible.builtin.csvfile', 'Plugin file=test.csv delimiter=,') }}"
    - name: test1
      ansible.builtin.set_fact:
        pl: "{{ csvline[0] }}"
        pn: "{{ csvline[1] }}"
  #      sev: "{{ csvline[2] }}"
      vars:
-       csvline: "{{ lookup('ansible.builtin.csvfile', 'Plugin file=test.csv delimiter=,') }}"
-#       csvline: "{{ lookup('ansible.builtin.csvfile', file='test.csv', delimiter=',') }}"
+#       csvline: "{{ lookup('ansible.builtin.csvfile', 'Plugin file=test.csv delimiter=,') }}"
+       csvline: "{{ lookup('ansible.builtin.csvfile', Plugin, file='test.csv', delimiter=',') }}"
    - name: debug csv
      ansible.builtin.debug: msg="value is {{ pn }}"
  
