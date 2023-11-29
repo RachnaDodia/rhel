@@ -30,10 +30,10 @@
       ansible.builtin.debug:
         msg: "Plugin {{ item }} has noncompliant severity."
       with_items: "{{ plugin_severity_output.stdout_lines }}"
-      when: "'noncompliant' in item and file_stat.stat.exists"
+      when: "'Non Compliant' in item and file_stat.stat.exists"
 
     - name: Debug the output
       ansible.builtin.debug:
         msg: "{{ item }}"
       with_items: "{{ plugin_severity_output.stdout_lines }}"
-      when: "'noncompliant' not in item and file_stat.stat.exists"
+      when: "'Non Compliant' not in item and file_stat.stat.exists"
