@@ -18,6 +18,6 @@
         - name: remediate
           debug:
             var: h
-          deligate_to: "{{ h }}" 
+          delegate_to: "{{ h }}" 
           
    
