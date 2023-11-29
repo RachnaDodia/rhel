@@ -3,5 +3,5 @@
   hosts: all
   tasks:
    - name: test
-     ansible.builtin.debug: msg="value is {{ lookup('ansible.builtin.csvfile', 'Plugin file=test.csv delimiter=, col=3') }}"
+     ansible.builtin.debug: msg="value is {{ lookup('ansible.builtin.csvfile', 'file=/root/test.csv delimiter=,') }}"
 
