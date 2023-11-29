@@ -18,6 +18,7 @@
         - name: remediate
           debug:
             var: h
-          delegate_to: "{{ h }}" 
+          delegate_to: "{{ item }}" 
+          with_items: "{{ groups.h }}"
           
    
