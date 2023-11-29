@@ -4,7 +4,7 @@
     - name: c1
       block:
         - name: check 
-          shell: cat compliance.csv |grep 1000309 |grep "Non Compliant"
+          shell: cat /root/compliance.csv |grep 1000309 |grep "Non Compliant"
           register: result
         - name: check 
           debug: 
