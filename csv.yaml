@@ -1,0 +1,6 @@
+---
+- name: test csv
+  hosts: all
+  tasks:
+   - name: test
+     ansible.builtin.debug: msg="value is {{ lookup('ansible.builtin.csvfile', 'file=/root/test.csv delimiter=, col=2'') }}"
