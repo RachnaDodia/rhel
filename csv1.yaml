@@ -3,9 +3,6 @@
   tasks:
     - name: c1
       block:
-        - name: check 
-          shell: cat /root/compliance.csv |grep 1000309 |grep "Non Compliant"
-          register: result
         - name: check 1
           shell: cat /root/compliance.csv |grep 1000309 |grep "Non Compliant"|awk -F, '{print $4}'
           register: result1
