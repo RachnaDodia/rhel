@@ -1,0 +1,199 @@
+Plugin,Plugin Name,Severity,IP Address,Plugin Output,First Discovered,Last Observed
+1000309,1.7.1.4 Ensure the SELinux state is enforcing,Non Compliant,10.4.8.117,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
+
+Information: Set SELinux to enable when the system is booted.
+
+Rationale:
+
+SELinux must be enabled at boot time to ensure that the controls it provides are in effect at all times.
+
+Result: FAILED
+
+Actual Value: Non-compliant file(s):
+      /etc/selinux/config - regex '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=' found - expect '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$' not found in the following lines:
+          7: SELINUX=disabled
+
+Policy Value: expect: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$
+file: /etc/selinux/config
+regex: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=
+system: Linux
+
+Solution: Edit the /etc/selinux/config file to set the SELINUX parameter:
+
+SELINUX=enforcing
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.1,800-171|3.1.2,800-53|AC-3(3),CIS_Recommendation|1.7.1.4,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3(3),LEVEL|2A,NESA|T5.5.4,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1","Sep 15, 2023 16:01:54 IST","Nov 18, 2023 12:02:14 IST"
+1000309,1.7.1.4 Ensure the SELinux state is enforcing,Non Compliant,10.4.8.124,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
+
+Information: Set SELinux to enable when the system is booted.
+
+Rationale:
+
+SELinux must be enabled at boot time to ensure that the controls it provides are in effect at all times.
+
+Result: FAILED
+
+Actual Value: Non-compliant file(s):
+      /etc/selinux/config - regex '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=' found - expect '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$' not found in the following lines:
+          7: SELINUX=disabled
+
+Policy Value: expect: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$
+file: /etc/selinux/config
+regex: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=
+system: Linux
+
+Solution: Edit the /etc/selinux/config file to set the SELINUX parameter:
+
+SELINUX=enforcing
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.1,800-171|3.1.2,800-53|AC-3(3),CIS_Recommendation|1.7.1.4,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3(3),LEVEL|2A,NESA|T5.5.4,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1","Nov 15, 2023 21:06:20 IST","Nov 18, 2023 12:02:14 IST"
+1000593,5.4.1 Ensure password creation requirements are configured - password-auth try_first_pass,Non Compliant,10.4.11.186,"Check Name: 5.4.1 Ensure password creation requirements are configured - password-auth try_first_pass
+
+Information: The pam_pwquality.so module checks the strength of passwords. It performs checks such as making sure a password is not a dictionary word, it is a certain length, contains a mix of characters (e.g. alphabet, numeric, other) and more. The following are definitions of the pam_pwquality.so options.
+
+try_first_pass - retrieve the password from a previous stacked PAM module. If not available, then prompt the user for a password.
+
+retry=3 - Allow 3 tries before sending back a failure.
+
+minlen=14 - password must be 14 characters or more
+
+** Either of the following can be used to enforce complex passwords:**
+
+minclass=4 - provide at least four classes of characters for the new password
+
+OR
+
+dcredit=-1 - provide at least one digit
+
+ucredit=-1 - provide at least one uppercase character
+
+ocredit=-1 - provide at least one special character
+
+lcredit=-1 - provide at least one lowercase character
+
+The settings shown above are one possible policy. Alter these values to conform to your own organization's password policies
+
+Rationale:
+
+Strong passwords protect systems from being hacked through brute force methods.
+
+Result: FAILED
+
+Actual Value: Non-compliant file(s):
+      /etc/pam.d/password-auth - regex '^[\s]*password[\s]+requisite[\s]+pam_pwquality\.so[\s]' found - expect 'try_first_pass' not found in the following lines:
+          22: password    requisite                                    pam_pwquality.so local_users_only retry=3 remember=5
+
+Policy Value: expect: try_first_pass
+file: /etc/pam.d/password-auth
+regex: ^[\s]*password[\s]+requisite[\s]+pam_pwquality\.so[\s]
+system: Linux
+
+Solution: Edit the file /etc/security/pwquality.conf and add or modify the following line for password length to conform to site policy
+
+minlen = 14
+
+Edit the file /etc/security/pwquality.conf and add or modify the following line for password complexity to conform to site policy
+
+minclass = 4
+
+OR
+
+dcredit = -1
+ucredit = -1
+ocredit = -1
+lcredit = -1
+
+Run the following to update the system-auth and password-auth files
+
+CP=$(authselect current | awk 'NR == 1 {print $3}' | grep custom/)
+for FN in system-auth password-auth; do
+[[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN
+[[ -z $(grep -E '^s*passwords+requisites+pam_pwquality.sos+.*enforce-for-roots*.*$' $PTF) ]] && sed -ri 's/^s*(passwords+requisites+pam_pwquality.sos+)(.*)$/12 enforce-for-root/' $PTF
+[[ -n $(grep -E '^s*passwords+requisites+pam_pwquality.sos+.*s+retry=S+s*.*$' $PTF) ]] && sed -ri '/pwquality/s/retry=S+/retry=3/' $PTF || sed -ri 's/^s*(passwords+requisites+pam_pwquality.sos+)(.*)$/12 retry=3/' $PTF
+done
+authselect apply-changes
+
+Additional Information:
+
+All default authselect profiles have pam_pwquality enabled with the expectation that options will be specified in pwquality.conf
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.8,800-53|AC-7a.,CIS_Recommendation|5.4.1,CN-L3|8.1.4.1(b),CSCv7|4.4,ITSG-33|AC-7a.,LEVEL|1A,NESA|T5.5.1,NIAv2|AM24,TBA-FIISB|45.1.2,TBA-FIISB|45.2.1,TBA-FIISB|45.2.2","Sep 15, 2023 16:01:54 IST","Nov 18, 2023 12:02:14 IST"
+1000594,5.4.1 Ensure password creation requirements are configured - system-auth try_first_pass,Non Compliant,10.4.11.186,"Check Name: 5.4.1 Ensure password creation requirements are configured - system-auth try_first_pass
+
+Information: The pam_pwquality.so module checks the strength of passwords. It performs checks such as making sure a password is not a dictionary word, it is a certain length, contains a mix of characters (e.g. alphabet, numeric, other) and more. The following are definitions of the pam_pwquality.so options.
+
+try_first_pass - retrieve the password from a previous stacked PAM module. If not available, then prompt the user for a password.
+
+retry=3 - Allow 3 tries before sending back a failure.
+
+minlen=14 - password must be 14 characters or more
+
+** Either of the following can be used to enforce complex passwords:**
+
+minclass=4 - provide at least four classes of characters for the new password
+
+OR
+
+dcredit=-1 - provide at least one digit
+
+ucredit=-1 - provide at least one uppercase character
+
+ocredit=-1 - provide at least one special character
+
+lcredit=-1 - provide at least one lowercase character
+
+The settings shown above are one possible policy. Alter these values to conform to your own organization's password policies
+
+Rationale:
+
+Strong passwords protect systems from being hacked through brute force methods.
+
+Result: FAILED
+
+Actual Value: Non-compliant file(s):
+      /etc/pam.d/system-auth - regex '^[\s]*password[\s]+requisite[\s]+pam_pwquality\.so[\s]' found - expect 'try_first_pass' not found in the following lines:
+          22: password    requisite                                    pam_pwquality.so local_users_only retry=3 remember=5
+
+Policy Value: expect: try_first_pass
+file: /etc/pam.d/system-auth
+regex: ^[\s]*password[\s]+requisite[\s]+pam_pwquality\.so[\s]
+system: Linux
+
+Solution: Edit the file /etc/security/pwquality.conf and add or modify the following line for password length to conform to site policy
+
+minlen = 14
+
+Edit the file /etc/security/pwquality.conf and add or modify the following line for password complexity to conform to site policy
+
+minclass = 4
+
+OR
+
+dcredit = -1
+ucredit = -1
+ocredit = -1
+lcredit = -1
+
+Run the following to update the system-auth and password-auth files
+
+CP=$(authselect current | awk 'NR == 1 {print $3}' | grep custom/)
+for FN in system-auth password-auth; do
+[[ -n $CP ]] && PTF=/etc/authselect/$CP/$FN || PTF=/etc/authselect/$FN
+[[ -z $(grep -E '^s*passwords+requisites+pam_pwquality.sos+.*enforce-for-roots*.*$' $PTF) ]] && sed -ri 's/^s*(passwords+requisites+pam_pwquality.sos+)(.*)$/12 enforce-for-root/' $PTF
+[[ -n $(grep -E '^s*passwords+requisites+pam_pwquality.sos+.*s+retry=S+s*.*$' $PTF) ]] && sed -ri '/pwquality/s/retry=S+/retry=3/' $PTF || sed -ri 's/^s*(passwords+requisites+pam_pwquality.sos+)(.*)$/12 retry=3/' $PTF
+done
+authselect apply-changes
+
+Additional Information:
+
+All default authselect profiles have pam_pwquality enabled with the expectation that options will be specified in pwquality.conf
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.5.2,800-53|IA-5(13),CIS_Recommendation|5.4.1,CSCv7|4.4,CSF|PR.AC-1,ITSG-33|IA-5,LEVEL|1A,NESA|T5.2.3,QCSC-v1|5.2.2,QCSC-v1|13.2","Sep 15, 2023 16:01:54 IST","Nov 18, 2023 12:02:14 IST"
