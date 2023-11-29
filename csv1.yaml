@@ -14,7 +14,7 @@
             var: result1
         - name: check 
           set_fact: 
-            h: "{{ result1 }}"       
+            h: "{{ result1.stdout_lines }}"     
         - name: remediate
           debug:
             var: h
