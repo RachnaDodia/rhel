@@ -17,6 +17,6 @@
             h: result1        
         - name: remediate
           debug:
-            msg: h
+            var: h
           
    
