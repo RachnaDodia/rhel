@@ -25,7 +25,7 @@ SELINUX=enforcing
 See Also: https://workbench.cisecurity.org/files/3366
 
 Reference Information: 800-171|3.1.1,800-171|3.1.2,800-53|AC-3(3),CIS_Recommendation|1.7.1.4,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3(3),LEVEL|2A,NESA|T5.5.4,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1","Sep 15, 2023 16:01:54 IST","Nov 18, 2023 12:02:14 IST"
-1000309,1.7.1.4 Ensure the SELinux state is enforcing,Non Compliant,10.4.8.124,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
+1000309,1.7.1.4 Ensure the SELinux state is enforcing,Compliant,10.4.8.124,"Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
 
 Information: Set SELinux to enable when the system is booted.
 
