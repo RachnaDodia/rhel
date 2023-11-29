@@ -1,3 +1,0 @@
-Plugin,PN,Severity,IP,Action
-393,"ENSURE PERMISSION",Compliant,"192.168.40.120",reset
-446,"password expiry",noncompliant,"192.168.40.121",change
