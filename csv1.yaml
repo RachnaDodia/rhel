@@ -15,7 +15,7 @@
         - name: check 
           set_fact: 
             h: result1        
-        - name: remediate:
+        - name: remediate
           debug:
             msg: h
           
