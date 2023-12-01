@@ -24,6 +24,7 @@
         - name: Check the severity for plugin 1000167 
           shell: cat /root/compliance.csv |grep 1000167 |grep "Non-Compliant"|awk -F, '{print $5}'
           register: result1
+          delegate_facts: True          
         - name: debug host for 1000167
           debug:
             var: result1
@@ -33,6 +34,8 @@
           when: result1.stdout_lines != []
         - name: 5.1.7 Ensure permissions on /etc/cron.d are configured
           ping:
-          delegate_to: "{{groups['h'][0]}}"
+          delegate_to: "{{ item }}"
+          delegate_facts: True
+          with_items: "{{ result1.stdout_lines }}"
           when: result1.stdout_lines != []
       ignore_errors: true 
