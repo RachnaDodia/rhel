@@ -1,1 +1,3506 @@
+Sr No.	Plugin	Plugin Name	Severity	IP Address	Env	Plugin Output	PCIDSS	OS
+2154	1000164	5.1.4 Ensure permissions on /etc/cron.daily are configured	Non-Compliant		UAT	Check Name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
 
+Information: The /etc/cron.daily directory contains system cron jobs that need to run on a daily basis. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.
+
+Rationale:
+
+Granting write access to this directory for non-privileged users could provide them the means for gaining unauthorized elevated privileges. Granting read access to this directory could give an unprivileged user insight in how to gain elevated privileges or circumvent auditing controls.
+
+Result: FAILED
+
+Actual Value: The file /etc/cron.daily with fmode owner: root group: root mode: 0755 uid: 0 gid: 0 uneven permissions : FALSE  does not match the policy value owner: root group: root mask: 077 uneven permissions : FALSE 
+
+/etc/cron.daily
+
+Policy Value: file: /etc/cron.daily
+group: root
+mask: 077
+owner: root
+system: Linux
+
+Solution: Run the following commands to set ownership and permissions on /etc/cron.daily :
+
+# chown root:root /etc/cron.daily
+
+# chmod og-rwx /etc/cron.daily
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.4.2,800-53|CM-6b.,CIS_Recommendation|5.1.4,CN-L3|8.1.10.6(d),CSCv6|3.1,CSCv7|5.1,CSF|PR.IP-1,ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,PCI-DSSv3.1|2.2.4,PCI-DSSv3.2|2.2.4,SWIFT-CSCv1|2.3	No	RHEL 8
+2155	1000167	5.1.7 Ensure permissions on /etc/cron.d are configured	Non-Compliant		UAT	Check Name: 5.1.7 Ensure permissions on /etc/cron.d are configured
+
+Information: The /etc/cron.d directory contains system cron jobs that need to run in a similar manner to the hourly, daily weekly and monthly jobs from /etc/crontab , but require more granular control as to when they run. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.
+
+Rationale:
+
+Granting write access to this directory for non-privileged users could provide them the means for gaining unauthorized elevated privileges. Granting read access to this directory could give an unprivileged user insight in how to gain elevated privileges or circumvent auditing controls.
+
+Result: FAILED
+
+Actual Value: The file /etc/cron.d with fmode owner: root group: root mode: 0755 uid: 0 gid: 0 uneven permissions : FALSE  does not match the policy value owner: root group: root mask: 077 uneven permissions : FALSE 
+
+/etc/cron.d
+
+Policy Value: file: /etc/cron.d
+group: root
+mask: 077
+owner: root
+system: Linux
+
+Solution: Run the following commands to set ownership and permissions on /etc/cron.d :
+
+# chown root:root /etc/cron.d
+
+# chmod og-rwx /etc/cron.d
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.4.2,800-53|CM-6b.,CIS_Recommendation|5.1.7,CN-L3|8.1.10.6(d),CSCv6|3.1,CSCv7|5.1,CSF|PR.IP-1,ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,PCI-DSSv3.1|2.2.4,PCI-DSSv3.2|2.2.4,SWIFT-CSCv1|2.3	No	RHEL 8
+2156	1000170	5.1.8 Ensure at/cron is restricted to authorized users - cron.deny	Non-Compliant		UAT	Check Name: 5.1.8 Ensure at/cron is restricted to authorized users - cron.deny
+
+Information: Configure /etc/cron.allow and /etc/at.allow to allow specific users to use these services. If /etc/cron.allow or /etc/at.allow do not exist, then /etc/at.deny and /etc/cron.deny are checked. Any user not specifically defined in those files is allowed to use at and cron. By removing the files, only users in /etc/cron.allow and /etc/at.allow are allowed to use at and cron. Note that even though a given user is not listed in cron.allow , cron jobs can still be run as that user. The cron.allow file only controls administrative access to the crontab command for scheduling and modifying cron jobs.
+
+Rationale:
+
+On many systems, only the system administrator is authorized to schedule cron jobs. Using the cron.allow file to control who can run cron jobs enforces this policy. It is easier to manage an allow list than a deny list. In a deny list, you could potentially add a user ID to the system and forget to add it to the deny files.
+
+Result: FAILED
+
+Actual Value: The file /etc/cron.deny exists
+
+Policy Value: file: /etc/cron.deny
+system: Linux
+
+Solution: Run the following commands to:
+
+remove /etc/cron.deny and /etc/at.deny
+
+create, set permissions, and set and ownership for /etc/cron.allow and /etc/at.allow:
+
+# rm /etc/cron.deny
+# rm /etc/at.deny
+
+# touch /etc/cron.allow
+# touch /etc/at.allow
+
+# chmod og-rwx /etc/cron.allow
+# chmod og-rwx /etc/at.allow
+
+# chown root:root /etc/cron.allow
+# chown root:root /etc/at.allow
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.7,800-53|AC-6(10),CIP|007-6-R1,CIS_Recommendation|5.1.8,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv6|9.1,CSCv7|16,CSF|PR.AC-4,ITSG-33|AC-6,LEVEL|1A,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,PCI-DSSv3.1|2.2.2,PCI-DSSv3.1|2.2.3,PCI-DSSv3.2|2.2.2,PCI-DSSv3.2|2.2.3,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3	No	RHEL 8
+2157	1000171	5.1.8 Ensure at/cron is restricted to authorized users - at.deny	Non-Compliant		UAT	Check Name: 5.1.8 Ensure at/cron is restricted to authorized users - at.deny
+
+Information: Configure /etc/cron.allow and /etc/at.allow to allow specific users to use these services. If /etc/cron.allow or /etc/at.allow do not exist, then /etc/at.deny and /etc/cron.deny are checked. Any user not specifically defined in those files is allowed to use at and cron. By removing the files, only users in /etc/cron.allow and /etc/at.allow are allowed to use at and cron. Note that even though a given user is not listed in cron.allow , cron jobs can still be run as that user. The cron.allow file only controls administrative access to the crontab command for scheduling and modifying cron jobs.
+
+Rationale:
+
+On many systems, only the system administrator is authorized to schedule cron jobs. Using the cron.allow file to control who can run cron jobs enforces this policy. It is easier to manage an allow list than a deny list. In a deny list, you could potentially add a user ID to the system and forget to add it to the deny files.
+
+Result: FAILED
+
+Actual Value: The file /etc/at.deny exists
+
+Policy Value: file: /etc/at.deny
+system: Linux
+
+Solution: Run the following commands to:
+
+remove /etc/cron.deny and /etc/at.deny
+
+create, set permissions, and set and ownership for /etc/cron.allow and /etc/at.allow:
+
+# rm /etc/cron.deny
+# rm /etc/at.deny
+
+# touch /etc/cron.allow
+# touch /etc/at.allow
+
+# chmod og-rwx /etc/cron.allow
+# chmod og-rwx /etc/at.allow
+
+# chown root:root /etc/cron.allow
+# chown root:root /etc/at.allow
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.7,800-53|AC-6(10),CIP|007-6-R1,CIS_Recommendation|5.1.8,CN-L3|7.1.3.2(b),CN-L3|7.1.3.2(g),CN-L3|8.1.4.2(d),CN-L3|8.1.10.6(a),CSCv6|9.1,CSCv7|16,CSF|PR.AC-4,ITSG-33|AC-6,LEVEL|1A,NESA|T5.1.1,NESA|T5.2.2,NESA|T5.4.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.3,NIAv2|AM1,NIAv2|AM23f,NIAv2|SS13c,NIAv2|SS15c,PCI-DSSv3.1|2.2.2,PCI-DSSv3.1|2.2.3,PCI-DSSv3.2|2.2.2,PCI-DSSv3.2|2.2.3,QCSC-v1|5.2.2,QCSC-v1|6.2,SWIFT-CSCv1|5.1,TBA-FIISB|31.4.2,TBA-FIISB|31.4.3	No	RHEL 8
+2158	1000243	1.1.21 Ensure sticky bit is set on all world-writable directories	Non-Compliant		UAT	Check Name: 1.1.21 Ensure sticky bit is set on all world-writable directories
+
+Information: Setting the sticky bit on world writable directories prevents users from deleting or renaming files in that directory that are not owned by them.
+
+Rationale:
+
+This feature prevents the ability to delete or rename files in world writable directories (such as /tmp ) that are owned by another user.
+
+Result: FAILED
+
+Actual Value: The command '/usr/bin/df --local -P | /usr/bin/awk {'if (NR!=1) print $6'} | /usr/bin/xargs -I '{}' /usr/bin/find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null | /usr/bin/awk '{print} END {if (NR == 0) print ""none""}'' returned : 
+
+/opt/bmc/bladelogic/RSCD/Transactions/202d0ee743c23b429fb6ccbbfdedc5a8
+/home/Backup_DB_UAT_09_06_2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/exports
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-slider
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-wysihtml5
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/chartjs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/adapters
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about/dialogs/hidpi
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/clipboard
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/clipboard/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/dialog
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/image
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/image/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/image/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/link
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/link/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/link/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/link/images/hidpi
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/magicline
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/magicline/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/magicline/images/hidpi
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/pastefromword
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/pastefromword/filter
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/scayt
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/scayt/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/specialchar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/specialchar/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/specialchar/dialogs/lang
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/table
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/table/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/tabletools
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/tabletools/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/wsc
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/wsc/dialogs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/img
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/assets
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/assets/inlineall
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/assets/outputxhtml
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/assets/uilanguages
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/dialog
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/dialog/assets
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/enterkey
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/htmlwriter
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/htmlwriter/assets
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/htmlwriter/assets/outputforflash
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/magicline
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/toolbar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/old/wysiwygarea
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator/font
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator/lib
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/samples/toolbarconfigurator/lib/codemirror
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/skins
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/skins/moono
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/skins/moono/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/skins/moono/images/hidpi
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/colorpicker
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/colorpicker/img
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/AutoFill
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/AutoFill/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/AutoFill/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/AutoFill/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/AutoFill/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColReorder
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColReorder/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColReorder/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColReorder/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColReorder/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColVis
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColVis/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColVis/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/ColVis/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedColumns
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedColumns/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedColumns/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedColumns/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedHeader
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedHeader/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedHeader/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/FixedHeader/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/KeyTable
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/KeyTable/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/KeyTable/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/KeyTable/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/examples/child-rows
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/examples/display-control
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/examples/initialisation
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/examples/styling
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Responsive/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller/examples/data
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/Scroller/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/css
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/examples
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/images/psd
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/js
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/extensions/TableTools/swf
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datatables/images
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datepicker
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/datepicker/locales
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/daterangepicker
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/fastclick
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/flot
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/fullcalendar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/flat
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/futurico
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/line
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/minimal
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/polaris
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/iCheck/square
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/input-mask
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/input-mask/phone-codes
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ionslider
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ionslider/img
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/jQuery
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/jQueryUI
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/jvectormap
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/knob
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/morris
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/pace
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/select2
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/select2/i18n
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/slimScroll
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/sparkline
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/timepicker
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/filenet
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2021/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2021/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2021/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2021/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2019
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2023
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2023/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2023/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2023/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/RCU_REPORTS/2023/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2020/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2021/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2021/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2019
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-detail/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/CREDIT_REPORTS/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2019
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2021/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/proofs/2023/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2019
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2020/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2021/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2021/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2023
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/dealer-agreement/2023/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2020
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/DSA_REPORTS/2023/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2021/Oct
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryDocs/2023/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Sep
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Dec
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2022/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2021/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2021/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2021/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2021/Nov
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023/Jan
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/inventory-forms/2023/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2021
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Feb
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Mar
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Apr
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/May
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Jun
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Jul
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2022/Aug
+/webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/uploads/InventoryProofs/2	No	RHEL 8
+2159	1000282	6.1.10 Ensure no world writable files exist	Non-Compliant		UAT	Check Name: 6.1.10 Ensure no world writable files exist
+
+Information: Unix-based systems support variable settings to control access to files. World writable files are the least secure. See the chmod(2) man page for more information.
+
+Rationale:
+
+Data in world-writable files can be modified and compromised by any user on the system. World writable files may also indicate an incorrectly written script or program that could potentially be the cause of a larger compromise to the system's integrity.
+
+Result: FAILED
+
+Actual Value: 10423 files are world writeable.
+The results have been truncated in order to avoid long scan times.
+The following 1000 files are world writeable:
+
+  /usr/local/bin/composer
+     owner: manager, group: manager, permissions: 0777
+
+  /opt/bmc/bladelogic/RSCD/Transactions/0c3f48b21aca3e8bb0608ff55c3ad887/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/0c3f48b21aca3e8bb0608ff55c3ad887/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/34eaf25c5b3e3c0cad069e6f3b45d3c2/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/34eaf25c5b3e3c0cad069e6f3b45d3c2/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/3b98fd80da7a3ea4bfd0eae740116ee0/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/3b98fd80da7a3ea4bfd0eae740116ee0/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/e00ac418167c34aca2788790b8671f23/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/e00ac418167c34aca2788790b8671f23/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/82af01ed19bd3bc19840a18ec592c862/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/82af01ed19bd3bc19840a18ec592c862/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/f5d3798f1bc53eeab1c60055c1a7d6c3/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/f5d3798f1bc53eeab1c60055c1a7d6c3/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/c073520fd8d83dec873d5e3b0bb59205/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/c073520fd8d83dec873d5e3b0bb59205/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/8cbc5377c498379689fa0eff547ccaf9/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/8cbc5377c498379689fa0eff547ccaf9/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/b5dc15df2a663601ae9bd5432ce2b7c3/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/b5dc15df2a663601ae9bd5432ce2b7c3/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/7a596a234ea13a5992e21c8a9222ccb9/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/7a596a234ea13a5992e21c8a9222ccb9/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/2650651a58ef3cc49d39bbacc6befa00/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/2650651a58ef3cc49d39bbacc6befa00/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/9b0e3f5f49e03d3797a1126eae10f07b/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/9b0e3f5f49e03d3797a1126eae10f07b/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/454366e841513262b17f066ca2369f07/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/454366e841513262b17f066ca2369f07/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/fe8a94f608113e699aef1b93cb33d362/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/fe8a94f608113e699aef1b93cb33d362/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/0d83e436bb013faa82198cf6f3aa25f3/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/0d83e436bb013faa82198cf6f3aa25f3/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/624911936450344ea8f7fc18efb6e765/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/624911936450344ea8f7fc18efb6e765/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/d0b2a6cdfa693e59945c43b1a8a1861a/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/d0b2a6cdfa693e59945c43b1a8a1861a/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/25d110531ea83d748e73d8096c4b5004/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/25d110531ea83d748e73d8096c4b5004/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/bad7c414fe06334caa44f70bc828597a/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/bad7c414fe06334caa44f70bc828597a/3
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/202d0ee743c23b429fb6ccbbfdedc5a8/1
+     owner: root, group: root, permissions: 0666
+
+  /opt/bmc/bladelogic/RSCD/Transactions/202d0ee743c23b429fb6ccbbfdedc5a8/3
+     owner: root, group: root, permissions: 0666
+
+  /var/opt/BESCommon/.HostIDAccess.write
+     owner: root, group: root, permissions: 0666
+
+  /var/opt/BESCommon/.HostIDAccess.read
+     owner: root, group: root, permissions: 0666
+
+  /bmcagent/58de814b450a3313a15e71ac0942cece/8c0ec7c38bca33f28f51421aef7902af.cfg
+     owner: root, group: root, permissions: 0666
+
+  /bmcagent/043abf31acb43069a95d4e8f79e507bd/8473b1b3f7353a4b85de625f12007ada.cfg
+     owner: root, group: root, permissions: 0666
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/css/bootstrap.min.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/css/bootstrap.min.css_11_10_19
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/css/bootstrap.min_.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/css/bootstrap-datetimepicker.min.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts/glyphicons-halflings-regular.eot
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts/glyphicons-halflings-regular.svg
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts/glyphicons-halflings-regular.ttf
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts/glyphicons-halflings-regular.woff
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/fonts/glyphicons-halflings-regular.woff2
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/js/bootstrap.min.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/bootstrap/js/bootstrap.min_1.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/custom-mobile.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/exports/index.html
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/favicon.ico
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/index.php
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-slider/bootstrap-slider.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-slider/slider.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/chartjs/Chart.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/chartjs/Chart.min.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/adapters/jquery.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/build-config.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/CHANGES.md
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/ckeditor.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/config.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/contents.css
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/af.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ar.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/bg.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/bn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/bs.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ca.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/cs.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/cy.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/da.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/de.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/de-ch.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/el.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/en.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/en-au.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/en-ca.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/en-gb.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/eo.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/es.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/et.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/eu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/fa.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/fi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/fo.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/fr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/fr-ca.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/gl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/gu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/he.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/hi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/hr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/hu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/id.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/is.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/it.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ja.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ka.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/km.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ko.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ku.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/lt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/lv.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/mk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/mn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ms.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/nb.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/nl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/no.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/pl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/pt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/pt-br.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ro.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ru.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/si.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sq.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sr-latn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/sv.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/th.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/tr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/tt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/ug.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/uk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/vi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/zh.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/lang/zh-cn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/LICENSE.md
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/a11yhelp.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/_translationstatus.txt
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/af.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ar.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/bg.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ca.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/cs.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/cy.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/da.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/de.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/de-ch.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/el.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/en.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/en-gb.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/eo.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/es.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/et.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/eu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/fa.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/fi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/fo.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/fr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/fr-ca.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/gl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/gu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/he.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/hi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/hr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/hu.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/id.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/it.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ja.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/km.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ko.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ku.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/lt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/lv.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/mk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/mn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/nb.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/nl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/no.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/pl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/pt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/pt-br.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ro.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ru.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/si.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sl.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sq.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sr-latn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/sv.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/th.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/tr.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/tt.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/ug.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/uk.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/vi.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/zh.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/a11yhelp/dialogs/lang/zh-cn.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about/dialogs/about.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about/dialogs/hidpi/logo_ckeditor.png
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/about/dialogs/logo_ckeditor.png
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/clipboard/dialogs/paste.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/dialog/dialogDefinition.js
+     owner: manager, group: manager, permissions: 0777
+
+  /webapp/webserver/web-uat.idfcfirstbank.com/empanelment/public/plugins/ckeditor/plugins/icons.png
+     owner: manager, grou	No	RHEL 8
+2160	1000283	6.1.11 Ensure no unowned files or directories exist	Non-Compliant		UAT	Check Name: 6.1.11 Ensure no unowned files or directories exist
+
+Information: Sometimes when administrators delete users from the password file they neglect to remove all files owned by those users from the system.
+
+Rationale:
+
+A new user who is assigned the deleted user's user ID or group ID may then end up 'owning' these files, and thus have more access on the system than was intended.
+
+Result: FAILED
+
+Actual Value: The following 447 files are orphaned::
+
+  /opt/splunkforwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin/scripts
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin/scripts/readme.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/splunkd
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/prichunkpng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/setSplunkEnv
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/genRootCA.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripalpng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/bzip2
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/genWebCert.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripnglsch
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pip3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/S3benchmark
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/btprobe
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripngtopam
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/wheel
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/prigreypng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/genSignedServerCert.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/idle3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/priweavepng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pydoc3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/easy_install-3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/classify
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/splunkmon
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pip3
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/splunk
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/2to3-3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/slim
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pid_check.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/openssl
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/btool
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/priforgepng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripamtopng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/web.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/outputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/limits.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/health.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/default-mode.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/bin/collector.path
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/learned
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/learned/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/restmap.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/default/authorize.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/README
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/README/inputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin/journald.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin/splunk-journald.path
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/auth
+     owner: 10777, group: 10777, permissions: 0700
+
+  /opt/splunkforwarder/etc/auth/crl
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/crl/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/prev_release
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/prev_release/cacert.pem.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/prev_release/ca.pem.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/scripts
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/cacert.pem.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/ca.pem.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/cloudCA.pem
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/appsCA.pem
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/deployment-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/deployment-apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/disabled-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/disabled-apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/init.d
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/init.d/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/licenses
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/licenses/forwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/licenses/forwarder/splunkforwarder.lic
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/modules
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/FIFO
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/FIFO/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/RemoteQueue
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/RemoteQueue/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/TCP
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/TCP/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/UDP
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/UDP/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/exec
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/exec/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/fschangemanager
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/fschangemanager/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/structuredparsing
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/structuredparsing/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/tailfile
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/tailfile/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/parsing
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/parsing/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/output
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/output/RemoteQueue
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/output/RemoteQueue/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/output/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/myinstall
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/myinstall/splunkd.xml.cfg-default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/shcluster
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/shcluster/users
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/users/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/README
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/README/outputs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/transforms.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/alert_actions.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web-features.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/visualizations.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/audit.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/server.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authentication.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/alert_actions.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authentication.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/messages.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authorize.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/limits.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authorize.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/source-classifier.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/bookmarks.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/bookmarks.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/checklist.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/serverclass.seed.xml.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/transforms.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/sourcetypes.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/collections.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/conf_checker.rules
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/sourcetypes.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default-mode.conf.examples
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/splunk-launch.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default-mode.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_rollups.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/global-banner.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default.meta.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/deploymentclient.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-prefs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/deploymentclient.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-seed.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_alerts.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default.meta.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/health.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/health.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/server.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-prefs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/global-banner.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/wmi.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/instance.cfg.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/instance.cfg.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_policy.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/limits.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/passwords.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/literals.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web-features.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_policy.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/livetail.conf.examples
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/source-classifier.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/livetail.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/wmi.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/passwords.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/messages.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_pools.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_alerts.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/inputs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_pools.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_rules.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/audit.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_rollups.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_rules.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/migration.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-seed.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/collections.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/outputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/procmon-filters.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/procmon-filters.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/inputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/literals.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/props.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/props.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/restmap.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/restmap.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/bin/gnome_keyring.py
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/system/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/default/messages.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/global-banner.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/telemetry.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/federated.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_policy.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/conf.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/sourcetypes.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/audit.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/authorize.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/web.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/outputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_rules.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/limits.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/visualizations.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/restmap.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/source-classifier.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/procmon-filters.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/literals.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/health.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_pools.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/metric_alerts.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/metric_rollups.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/default-mode.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/authentication.conf
+     owner: 10777, group: 10777, permissions: 0600
+
+  /opt/splunkforwarder/etc/system/default/alert_actions.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/web-features.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/livetail.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/local
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/local/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/static
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/static/atom.xsl
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/static/splunkrc_cmds.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/users
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/users/users.ini.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-btool.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log.cfg
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-cmdline.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/datetime.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-cmdline-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/prettyprint.xsl
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-utility.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-btool-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/splunk.version
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/manager-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/default/indexes.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/local
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/local/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/splunk-launch.conf.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/include
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/include/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0/libbson-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0/libbson-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0/libbson-static-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0/libbson-static-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0/libmongoc-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0/libmongoc-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0/libmongoc-static-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0/libmongoc-static-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0/bson-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0/bson-1.0-config.cmake
+     owner: 107	No	RHEL 8
+2161	1000284	6.1.12 Ensure no ungrouped files or directories exist	Non-Compliant		UAT	Check Name: 6.1.12 Ensure no ungrouped files or directories exist
+
+Information: Sometimes when administrators delete users or groups from the system they neglect to remove all files owned by those users or groups.
+
+Rationale:
+
+A new user who is assigned the deleted user's user ID or group ID may then end up 'owning' these files, and thus have more access on the system than was intended.
+
+Result: FAILED
+
+Actual Value: The following 447 files are orphaned::
+
+  /opt/splunkforwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin/scripts
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/bin/scripts/readme.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/splunkd
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/prichunkpng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/setSplunkEnv
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/bin/genRootCA.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripalpng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/bzip2
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/genWebCert.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripnglsch
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pip3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/S3benchmark
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/btprobe
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripngtopam
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/wheel
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/prigreypng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/genSignedServerCert.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/idle3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/priweavepng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pydoc3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/easy_install-3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/classify
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/splunkmon
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pip3
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/splunk
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/2to3-3.7
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/slim
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pid_check.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/openssl
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/btool
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/priforgepng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/bin/pripamtopng
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/web.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/outputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/limits.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/health.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/default-mode.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/SplunkUniversalForwarder/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/bin/collector.path
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/introspection_generator_addon/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/learned
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/default/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/learned/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/learned/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/restmap.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/search/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/search/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_httpinput/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/splunk_internal_metrics/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/default/authorize.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/README
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/README/inputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin/journald.sh
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/apps/journald_input/bin/splunk-journald.path
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/auth
+     owner: 10777, group: 10777, permissions: 0700
+
+  /opt/splunkforwarder/etc/auth/crl
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/crl/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/prev_release
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/prev_release/cacert.pem.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/prev_release/ca.pem.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/auth/scripts
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/auth/cacert.pem.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/ca.pem.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/cloudCA.pem
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/auth/appsCA.pem
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/deployment-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/deployment-apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/disabled-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/disabled-apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/init.d
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/init.d/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/licenses
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/licenses/forwarder
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/licenses/forwarder/splunkforwarder.lic
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/modules
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/FIFO
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/FIFO/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/RemoteQueue
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/RemoteQueue/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/TCP
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/TCP/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/UDP
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/UDP/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/exec
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/exec/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/fschangemanager
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/fschangemanager/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/structuredparsing
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/structuredparsing/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/input/tailfile
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/input/tailfile/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/parsing
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/parsing/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/output
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/output/RemoteQueue
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/modules/output/RemoteQueue/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/modules/output/config.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/myinstall
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/myinstall/splunkd.xml.cfg-default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/shcluster
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/apps/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/shcluster/users
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/shcluster/users/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/README
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/README/outputs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/transforms.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/alert_actions.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web-features.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/visualizations.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/audit.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/server.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authentication.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/alert_actions.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authentication.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/messages.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authorize.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/limits.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/authorize.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/source-classifier.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/bookmarks.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/bookmarks.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/checklist.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/serverclass.seed.xml.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/transforms.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/sourcetypes.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/collections.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/conf_checker.rules
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/sourcetypes.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default-mode.conf.examples
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/splunk-launch.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default-mode.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_rollups.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/global-banner.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default.meta.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/deploymentclient.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-prefs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/deploymentclient.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-seed.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_alerts.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/default.meta.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/health.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/health.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/server.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-prefs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/global-banner.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/wmi.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/instance.cfg.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/instance.cfg.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_policy.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/limits.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/passwords.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/literals.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/web-features.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_policy.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/livetail.conf.examples
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/source-classifier.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/livetail.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/wmi.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/passwords.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/messages.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_pools.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_alerts.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/inputs.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_pools.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_rules.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/audit.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/metric_rollups.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/workload_rules.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/migration.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/user-seed.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/collections.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/outputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/procmon-filters.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/procmon-filters.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/inputs.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/literals.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/props.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/props.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/restmap.conf.example
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/README/restmap.conf.spec
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/bin
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/bin/gnome_keyring.py
+     owner: 10777, group: 10777, permissions: 0555
+
+  /opt/splunkforwarder/etc/system/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/default/messages.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/global-banner.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/props.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/telemetry.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/server.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/federated.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_policy.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/conf.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/sourcetypes.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/audit.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/transforms.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/authorize.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/web.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/outputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_rules.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/limits.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/visualizations.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/restmap.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/source-classifier.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/procmon-filters.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/literals.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/health.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/workload_pools.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/metric_alerts.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/inputs.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/metric_rollups.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/default-mode.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/app.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/authentication.conf
+     owner: 10777, group: 10777, permissions: 0600
+
+  /opt/splunkforwarder/etc/system/default/alert_actions.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/web-features.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/default/livetail.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/local
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/local/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/metadata
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/metadata/default.meta
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/static
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/system/static/atom.xsl
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/system/static/splunkrc_cmds.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/users
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/users/users.ini.default
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-btool.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log.cfg
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/etc/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-cmdline.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/datetime.xml
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-cmdline-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/prettyprint.xsl
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-utility.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-btool-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/splunk.version
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/log-debug.cfg
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/manager-apps
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/default
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/default/indexes.conf
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/local
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/etc/manager-apps/_cluster/local/README
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/etc/splunk-launch.conf.default
+     owner: 10777, group: 10777, permissions: 0644
+
+  /opt/splunkforwarder/include
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/include/copyright.txt
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0/libbson-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-1.0/libbson-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0/libbson-static-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libbson-static-1.0/libbson-static-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0/libmongoc-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-1.0/libmongoc-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0/libmongoc-static-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/libmongoc-static-1.0/libmongoc-static-1.0-config.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0
+     owner: 10777, group: 10777, permissions: 0755
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0/bson-1.0-config-version.cmake
+     owner: 10777, group: 10777, permissions: 0444
+
+  /opt/splunkforwarder/lib/cmake/bson-1.0/bson-1.0-config.cmake
+     owner: 1077	No	RHEL 8
+2162	1000309	1.7.1.4 Ensure the SELinux state is enforcing	Non-Compliant		UAT	Check Name: 1.7.1.4 Ensure the SELinux state is enforcing
+
+Information: Set SELinux to enable when the system is booted.
+
+Rationale:
+
+SELinux must be enabled at boot time to ensure that the controls it provides are in effect at all times.
+
+Result: FAILED
+
+Actual Value: Non-compliant file(s):
+      /etc/selinux/config - regex '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=' found - expect '^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$' not found in the following lines:
+          7: SELINUX=permissive
+
+Policy Value: expect: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=[\s]*[eE][nN][fF][oO][rR][cC][iI][nN][gG][\s]*$
+file: /etc/selinux/config
+regex: ^[\s]*[sS][eE][lL][iI][nN][uU][xX][\s]*=
+system: Linux
+
+Solution: Edit the /etc/selinux/config file to set the SELINUX parameter:
+
+SELINUX=enforcing
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.1,800-171|3.1.2,800-53|AC-3(3),CIS_Recommendation|1.7.1.4,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3(3),LEVEL|2A,NESA|T5.5.4,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1	No	RHEL 8
+2163	1000444	1.5.2 Ensure bootloader password is set	Non-Compliant		UAT	Check Name: 1.5.2 Ensure bootloader password is set
+
+Information: Setting the boot loader password will require that anyone rebooting the system must enter a password before being able to set command line boot parameters
+
+Rationale:
+
+Requiring a boot password upon execution of the boot loader will prevent an unauthorized user from entering boot parameters or changing the boot partition. This prevents users from weakening security (e.g. turning off SELinux at boot time).
+
+Impact:
+
+If password protection is enabled, only the designated superuser can edit a Grub 2 menu item by pressing 'e' or access the GRUB 2 command line by pressing 'c'
+
+If GRUB 2 is set up to boot automatically to a password-protected menu entry the user has no option to back out of the password prompt to select another menu entry. Holding the SHIFT key will not display the menu in this case. The user must enter the correct username and password. If unable, the configuration files will have to be edited via the LiveCD or other means to fix the problem
+
+You can add --unrestricted to the menu entries to allow the system to boot without entering a password. Password will still be required to edit menu items.
+
+Result: FAILED
+
+Actual Value: The command 'tst1="""" tst2="""" output="""" efidir="""" gbdir="""" grubdir="""" grubfile="""" grubext="""" userfile=""""; efidir=$(find /boot/efi/EFI/* -type d -not -name 'BOOT'); gbdir=$(find /boot -maxdepth 1 -type d -name 'grub*'); for file in ""$efidir""/grub.cfg ""$efidir""/grub.conf; do [ -f ""$file"" ] && grubdir=""$efidir"" && grubfile=$file; done; if [ -z ""$grubdir"" ]; then for file in ""$gbdir""/grub.cfg ""$gbdir""/grub.conf; do [ -f ""$file"" ] && grubdir=""$gbdir"" && grubfile=$file; done; fi; grubext=""$(echo ""$grubfile"" | cut -d. -f2)""; userfile=""$grubdir/user.cfg""; if [ -f ""$userfile"" ]; then /usr/bin/grep -Pq '^\h*GRUB2_PASSWORD\h*=\h*.+$' ""$userfile"" && output=""bootloader password set in \""$userfile\""""; fi; if [ -z ""$output"" ]; then if [ -f ""$grubfile"" ]; then if [ ""$grubext"" = ""conf"" ]; then /usr/bin/grep -Piq '^\h*password\h+\H+\h+.+$' ""$grubfile"" && output=""bootloader password set in \""$grubfile\""""; elif [ ""$grubext"" = ""cfg"" ]; then /usr/bin/grep -Piq '^\h*set\h+superusers\h*=\h*""?[^""\n\r]+""?(\h+.*)?$' ""$grubfile"" && tst1=pass; /usr/bin/grep -Piq '^\h*password\h+\H+\h+.+$' ""$grubfile"" && tst2=pass; [ ""$tst1"" = pass ] && [ ""$tst2"" = pass ] && output=""bootloader password set in \""$grubfile\""""; fi; fi; fi; if [ -n ""$output"" ] ; then echo ""PASSED""; echo ""$output""; else echo ""FAILED""; [ -f ""$userfile"" ] && echo ""bootloader password is not set in \""$userfile\""""; [ ""$grubext"" = ""cfg"" ] && [ ! -f ""$userfile"" ] && echo ""\""$userfile\"" doesn't exist""; [ -f ""$grubfile"" ] && echo ""bootloaded password is not set in \""$grubfile\""""; fi' returned : 
+
+FAILED
+bootloader password is not set in ""/boot/grub2/user.cfg""
+bootloaded password is not set in ""/boot/grub2/grub.cfg""
+
+Policy Value: cmd: tst1="""" tst2="""" output="""" efidir="""" gbdir="""" grubdir="""" grubfile="""" grubext="""" userfile=""""; efidir=$(find /boot/efi/EFI/* -type d -not -name 'BOOT'); gbdir=$(find /boot -maxdepth 1 -type d -name 'grub*'); for file in ""$efidir""/grub.cfg ""$efidir""/grub.conf; do [ -f ""$file"" ] && grubdir=""$efidir"" && grubfile=$file; done; if [ -z ""$grubdir"" ]; then for file in ""$gbdir""/grub.cfg ""$gbdir""/grub.conf; do [ -f ""$file"" ] && grubdir=""$gbdir"" && grubfile=$file; done; fi; grubext=""$(echo ""$grubfile"" | cut -d. -f2)""; userfile=""$grubdir/user.cfg""; if [ -f ""$userfile"" ]; then /usr/bin/grep -Pq '^\h*GRUB2_PASSWORD\h*=\h*.+$' ""$userfile"" && output=""bootloader password set in \""$userfile\""""; fi; if [ -z ""$output"" ]; then if [ -f ""$grubfile"" ]; then if [ ""$grubext"" = ""conf"" ]; then /usr/bin/grep -Piq '^\h*password\h+\H+\h+.+$' ""$grubfile"" && output=""bootloader password set in \""$grubfile\""""; elif [ ""$grubext"" = ""cfg"" ]; then /usr/bin/grep -Piq '^\h*set\h+superusers\h*=\h*""?[^""\n\r]+""?(\h+.*)?$' ""$grubfile"" && tst1=pass; /usr/bin/grep -Piq '^\h*password\h+\H+\h+.+$' ""$grubfile"" && tst2=pass; [ ""$tst1"" = pass ] && [ ""$tst2"" = pass ] && output=""bootloader password set in \""$grubfile\""""; fi; fi; fi; if [ -n ""$output"" ] ; then echo ""PASSED""; echo ""$output""; else echo ""FAILED""; [ -f ""$userfile"" ] && echo ""bootloader password is not set in \""$userfile\""""; [ ""$grubext"" = ""cfg"" ] && [ ! -f ""$userfile"" ] && echo ""\""$userfile\"" doesn't exist""; [ -f ""$grubfile"" ] && echo ""bootloaded password is not set in \""$grubfile\""""; fi
+expect: PASSED
+system: Linux
+
+Solution: Create an encrypted password with grub2-setpassword :
+
+# grub2-setpassword
+
+Enter password: <password>
+Confirm password: <password>
+
+Run the following command to update the grub2 configuration:
+
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
+
+
+Additional Information:
+
+This recommendation is designed around the grub2 bootloader, if LILO or another bootloader is in use in your environment enact equivalent settings.
+
+Replace '/boot/grub2/grub.cfg with the appropriate grub configuration file for your environment
+
+The superuser/user information and password do not have to be contained in the /etc/grub.d/00_header file. The information can be placed in any /etc/grub.d file as long as that file is incorporated into grub.cfg. The user may prefer to enter this data into a custom file, such as /etc/grub.d/40_custom so it is not overwritten should the Grub package be updated. If placing the information in a custom file, do not include the 'cat << EOF' and 'EOF' lines as the content is automatically added from these files.
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.1,800-53|AC-3.,CIS_Recommendation|1.5.2,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|5.1,CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3,LEVEL|1A,NESA|T4.2.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1	No	RHEL 8
+2164	1000466	1.9 Ensure updates, patches, and additional security software are installed	Non-Compliant		UAT	Check Name: 1.9 Ensure updates, patches, and additional security software are installed
+
+Information: Periodically patches are released for included software either due to security flaws or to include additional functionality.
+
+Rationale:
+
+Newer patches may contain security enhancements that would not be available through the latest full update. As a result, it is recommended that the latest software patches be used to take advantage of the latest functionality. As with any software installation, organizations need to determine if a given update meets their requirements and verify the compatibility and supportability of any additional software against the update revision that is selected.
+
+Result: FAILED
+
+Actual Value: The command '/usr/bin/dnf check-update && echo 'pass' || echo 'fail'' returned : 
+
+Updating Subscription Management repositories.
+Red Hat Enterprise L     [===                 ] ---  B/s |   0  B     --:-- ETA
+Red Hat Enterprise Linux 8 for x86_64 - BaseOS   35 kB/s | 2.4 kB     00:00    
+Red Hat Enterprise L     [===                 ] ---  B/s |   0  B     --:-- ETA
+Red Hat Enterprise Linux 8 for x86_64 - AppStre  40 kB/s | 2.8 kB     00:00    
+
+samba-common.noarch            . 4.17.5-2.el8       rhel-8-for-x86_64-baseos-rpms
+sssd-common.x86_64             . 2.8.2-2.el8        rhel-8-for-x86_64-baseos-rpms
+subscription-manager.x86_64    . 1.28.36-2.el8      rhel-8-for-x86_64-baseos-rpms
+tuned.noarch                   . 2.20.0-1.el8       rhel-8-for-x86_64-baseos-rpms
+fail
+
+Policy Value: cmd: /usr/bin/dnf check-update && echo 'pass' || echo 'fail'
+expect: ^pass
+system: Linux
+
+Solution: Use your package manager to update all packages on the system according to site policy.
+The following command will install all available updates:
+
+# dnf update
+
+Additional Information:
+
+Site policy may mandate a testing period before install onto production systems for available updates.
+
+# dnf check-update
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.14.1,800-53|SI-2,CIS_Recommendation|1.9,CN-L3|8.1.4.4(e),CN-L3|8.1.10.5(a),CN-L3|8.1.10.5(b),CN-L3|8.5.4.1(b),CN-L3|8.5.4.1(d),CN-L3|8.5.4.1(e),CSCv7|3.4,CSF|ID.RA-1,CSF|PR.IP-12,ITSG-33|SI-2,LEVEL|1M,NESA|T7.6.2,NESA|T7.7.1,NIAv2|PR9,QCSC-v1|11.2,SWIFT-CSCv1|2.2	No	RHEL 8
+2165	1000632	6.2.7 Ensure users' home directories permissions are 750 or more restrictive	Non-Compliant		UAT	Check Name: 6.2.7 Ensure users' home directories permissions are 750 or more restrictive
+
+Information: While the system administrator can establish secure permissions for users' home directories, the users can easily override these.
+
+Rationale:
+
+Group or world-writable user home directories may enable malicious users to steal or modify other users' data or to gain another user's system privileges.
+
+Result: FAILED
+
+Actual Value: The command '/usr/bin/awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) {print $1 "" "" $6}' /etc/passwd | while read -r user dir; do if [ ! -d ""$dir"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" doesn't exist""; else dirperm=$(stat -L -c ""%A"" ""$dir""); if [ ""$(echo ""$dirperm"" | cut -c6)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c8)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c9)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c10)"" != ""-"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" has permissions: \""$(stat -L -c ""%a"" ""$dir"")\""""; fi; fi; done | /usr/bin/awk '{ print } END { if (NR==0) print ""All home directories have proper permissions""}'' returned : 
+
+User: ""splunk"" home directory: ""/opt/splunkforwarder"" has permissions: ""755""
+
+Policy Value: cmd: /usr/bin/awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) {print $1 "" "" $6}' /etc/passwd | while read -r user dir; do if [ ! -d ""$dir"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" doesn't exist""; else dirperm=$(stat -L -c ""%A"" ""$dir""); if [ ""$(echo ""$dirperm"" | cut -c6)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c8)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c9)"" != ""-"" ] || [ ""$(echo ""$dirperm"" | cut -c10)"" != ""-"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" has permissions: \""$(stat -L -c ""%a"" ""$dir"")\""""; fi; fi; done | /usr/bin/awk '{ print } END { if (NR==0) print ""All home directories have proper permissions""}'
+expect: All home directories have proper permissions
+system: Linux
+
+Solution: Making global modifications to user home directories without alerting the user community can result in unexpected outages and unhappy users. Therefore, it is recommended that a monitoring policy be established to report user file permissions and determine the action to be taken in accordance with site policy.
+The following script can be used to remove permissions is excess of 750 from users' home directories:
+
+#!/bin/bash
+
+awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(/usr)?/sbin/nologin(/)?$/ && $7!~/(/usr)?/bin/false(/)?$/) {print $6}' /etc/passwd | while read -r dir; do
+   if [ -d '$dir' ]; then
+      dirperm=$(stat -L -c '%A' '$dir')
+      if [ '$(echo '$dirperm' | cut -c6)' != '-' ] || [ '$(echo '$dirperm' | cut -c8)' != '-' ] || [ '$(echo '$dirperm' | cut -c9)' != '-' ] || [ '$(echo '$dirperm' | cut -c10)' != '-' ]; then
+         chmod g-w,o-rwx '$dir'
+      fi
+   fi
+done
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.4.2,800-53|CM-6b.,CIS_Recommendation|6.2.7,CN-L3|8.1.10.6(d),CSCv7|14.6,CSF|PR.IP-1,ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3	No	RHEL 8
+2166	1000633	6.2.8 Ensure users own their home directories	Non-Compliant		UAT	Check Name: 6.2.8 Ensure users own their home directories
+
+Information: The user home directory is space defined for the particular user to set local environment variables and to store personal files.
+
+Rationale:
+
+Since the user is accountable for files stored in the user home directory, the user must be the owner of the directory.
+
+Result: FAILED
+
+Actual Value: The command '/usr/bin/awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 "" "" $6 }' /etc/passwd | while read -r user dir; do if [ ! -d ""$dir"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" does not exist.""; else owner=$(stat -L -c ""%U"" ""$dir""); if [ ""$owner"" != ""$user"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" is owned by \""$owner\""""; fi; fi; done | /usr/bin/awk '{ print } END { if (NR==0) print ""All home directories have proper owners"" }'' returned : 
+
+User: ""splunk"" home directory: ""/opt/splunkforwarder"" is owned by ""UNKNOWN""
+
+Policy Value: cmd: /usr/bin/awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(\/usr)?\/sbin\/nologin(\/)?$/ && $7!~/(\/usr)?\/bin\/false(\/)?$/) { print $1 "" "" $6 }' /etc/passwd | while read -r user dir; do if [ ! -d ""$dir"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" does not exist.""; else owner=$(stat -L -c ""%U"" ""$dir""); if [ ""$owner"" != ""$user"" ]; then echo ""User: \""$user\"" home directory: \""$dir\"" is owned by \""$owner\""""; fi; fi; done | /usr/bin/awk '{ print } END { if (NR==0) print ""All home directories have proper owners"" }'
+expect: All home directories have proper owners
+system: Linux
+
+Solution: Change the ownership of any home directories that are not owned by the defined user to the correct user.
+The following script will create missing home directories, set the owner, and set the permissions for interactive users' home directories:
+
+#!/bin/bash
+
+awk -F: '($1!~/(halt|sync|shutdown|nfsnobody)/ && $7!~/^(/usr)?/sbin/nologin(/)?$/ && $7!~/(/usr)?/bin/false(/)?$/) { print $1 ' ' $6 }' /etc/passwd | while read -r user dir; do
+   if [ ! -d '$dir' ]; then
+      echo 'User: '$user' home directory: '$dir' does not exist, creating home directory'
+      mkdir '$dir'
+      chmod g-w,o-rwx '$dir'
+      chown '$user' '$dir'
+   else
+      owner=$(stat -L -c '%U' '$dir')
+      if [ '$owner' != '$user' ]; then
+         chmod g-w,o-rwx '$dir'
+         chown '$user' '$dir'
+      fi
+   fi
+done
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.4.2,800-53|CM-6b.,CIS_Recommendation|6.2.8,CN-L3|8.1.10.6(d),CSCv7|14.6,CSF|PR.IP-1,ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,SWIFT-CSCv1|2.3	No	RHEL 8
+2167	1016372	5.5.5 Ensure default user umask is 027 or more restrictive - less restrictive system wide umask	Non-Compliant		UAT	Check Name: 5.5.5 Ensure default user umask is 027 or more restrictive - less restrictive system wide umask
+
+Information: The user file-creation mode mask (umask) is use to determine the file permission for newly created directories and files. In Linux, the default permissions for any newly created directory is 0777 (rwxrwxrwx), and for any newly created file it is 0666 (rw-rw-rw-). The umask modifies the default Linux permissions by restricting (masking) these permissions. The umask is not simply subtracted, but is processed bitwise. Bits set in the umask are cleared in the resulting file mode.
+
+umask can be set with either octal or Symbolic values:
+
+Octal (Numeric) Value - Represented by either three or four digits. ie umask 0027 or umask 027. If a four digit umask is used, the first digit is ignored. The remaining three digits effect the resulting permissions for user, group, and world/other respectively.
+
+Symbolic Value - Represented by a comma separated list for User u, group g, and world/other o. The permissions listed are not masked by umask. ie a umask set by umask u=rwx,g=rx,o= is the Symbolic equivalent of the Octal umask 027. This umask would set a newly created directory with file mode drwxr-x--- and a newly created file with file mode rw-r-----.
+
+The default umask can be set to use the pam_umask module or in a System Wide Shell Configuration File. The user creating the directories or files has the discretion of changing the permissions via the chmod command, or choosing a different default umask by adding the umask command into a User Shell Configuration File, ( .bash_profile or .bashrc), in their home directory.
+
+
+
+
+Setting the default umask:
+
+pam_umask module:
+
+will set the umask according to the system default in /etc/login.defs and user settings, solving the problem of different umask settings with different shells, display managers, remote sessions etc.
+
+umask=<mask> value in the /etc/login.defs file is interpreted as Octal
+
+Setting USERGROUPS_ENAB to yes in /etc/login.defs (default):
+
+will enable setting of the umask group bits to be the same as owner bits. (examples: 022 -> 002, 077 -> 007) for non-root users, if the uid is the same as gid, and username is the same as the <primary group name>
+
+userdel will remove the user's group if it contains no more members, and useradd will create by default a group with the name of the user
+
+System Wide Shell Configuration File:
+
+/etc/profile - used to set system wide environmental variables on users shells. The variables are sometimes the same ones that are in the .bash_profile, however this file is used to set an initial PATH or PS1 for all shell users of the system. is only executed for interactive login shells, or shells executed with the --login parameter.
+
+/etc/profile.d - /etc/profile will execute the scripts within /etc/profile.d/*.sh. It is recommended to place your configuration in a shell script within /etc/profile.d to set your own system wide environmental variables.
+
+/etc/bashrc - System wide version of .bashrc. In Fedora derived distributions, etc/bashrc also invokes /etc/profile.d/*.sh if non-login shell, but redirects output to /dev/null if non-interactive. Is only executed for interactive shells or if BASH_ENV is set to /etc/bashrc.
+
+User Shell Configuration Files:
+
+~/.bash_profile - Is executed to configure your shell before the initial command prompt. Is only read by login shells.
+
+~/.bashrc - Is executed for interactive shells. only read by a shell that's both interactive and non-login
+
+Rationale:
+
+Setting a very secure default value for umask ensures that users make a conscious choice about their file permissions. A default umask setting of 077 causes files and directories created by users to not be readable by any other user on the system. A umask of 027 would make files and directories readable by users in the same Unix group, while a umask of 022 would make files readable by every user on the system.
+
+Result: FAILED
+
+Actual Value: The command '/usr/bin/grep -RPi '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)' /etc/login.defs /etc/profile* /etc/bashrc* | /usr/bin/awk '{print} END {if (NR == 0) print ""No files returned""; else print ""fail""}'' returned : 
+
+/etc/profile.rpmnew:    umask 002
+/etc/profile.rpmnew:    umask 022
+/etc/bashrc.rpmnew:       umask 002
+/etc/bashrc.rpmnew:       umask 022
+fail
+
+Policy Value: cmd: /usr/bin/grep -RPi '(^|^[^#]*)\s*umask\s+([0-7][0-7][01][0-7]\b|[0-7][0-7][0-7][0-6]\b|[0-7][01][0-7]\b|[0-7][0-7][0-6]\b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+\b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?\b)' /etc/login.defs /etc/profile* /etc/bashrc* | /usr/bin/awk '{print} END {if (NR == 0) print ""No files returned""; else print ""fail""}'
+expect: No files returned
+system: Linux
+
+Solution: Review /etc/bashrc, /etc/profile, and all files ending in *.sh in the /etc/profile.d/ directory and remove or edit all umask entries to follow local site policy. Any remaining entries should be: umask 027, umask u=rwx,g=rx,o= or more restrictive.
+Configure umask in one of the following files:
+
+a file in the /etc/profile.d/ directory ending in .sh
+
+/etc/profile
+
+/etc/bashrc
+
+Example:
+
+# vi /etc/profile.d/set_umask.sh
+
+umask 027
+
+Run the following command and remove or modify the umask of any returned files:
+
+# grep -RPi '(^|^[^#]*)s*umasks+([0-7][0-7][01][0-7]b|[0-7][0-7][0-7][0-6]b|[0-7][01][0-7]b|[0-7][0-7][0-6]b|(u=[rwx]{0,3},)?(g=[rwx]{0,3},)?o=[rwx]+b|(u=[rwx]{1,3},)?g=[^rx]{1,3}(,o=[rwx]{0,3})?b)' /etc/login.defs /etc/profile* /etc/bashrc*
+
+Follow one of the following methods to set the default user umask:
+Edit /etc/login.defs and edit the UMASK and USERGROUPS_ENAB lines as follows:
+
+UMASK 027
+
+USERGROUPS_ENAB no
+
+Edit the files /etc/pam.d/password-auth and /etc/pam.d/system-auth and add or edit the following:
+
+session     optional      pam_umask.so
+
+OR Configure umask in one of the following files:
+
+A file in the /etc/profile.d/ directory ending in .sh
+
+/etc/profile
+
+/etc/bashrc
+
+Example: /etc/profile.d/set_umask.sh
+
+umask 027
+
+Note: this method only applies to bash and shell. If other shells are supported on the system, it is recommended that their configuration files also are checked.
+
+Default Value:
+
+UMASK 022
+
+Additional Information:
+
+Other methods of setting a default user umask exist
+
+If other methods are in use in your environment they should be audited
+
+The default user umask can be overridden with a user specific umask
+
+The user creating the directories or files has the discretion of changing the permissions:
+
+Using the chmod command
+
+Setting a different default umask by adding the umask command into a User Shell Configuration File, (.bashrc), in their home directory
+
+Manually changing the umask for the duration of a login session by running the umask command
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.1.1,800-53|AC-3(4)(d),CIS_Recommendation|5.5.5,CN-L3|8.1.4.2(f),CN-L3|8.1.4.11(b),CN-L3|8.1.10.2(c),CN-L3|8.5.3.1,CN-L3|8.5.4.1(a),CSCv7|13,CSCv7|5.1,CSF|PR.AC-4,CSF|PR.PT-3,ISO/IEC-27001|A.9.4.1,ISO/IEC-27001|A.9.4.5,ITSG-33|AC-3(4),LEVEL|1A,NESA|T4.2.1,NESA|T5.4.4,NESA|T5.4.5,NESA|T5.5.4,NESA|T5.6.1,NESA|T7.5.2,NESA|T7.5.3,NIAv2|AM3,NIAv2|SS29,QCSC-v1|3.2,QCSC-v1|5.2.2,QCSC-v1|13.2,TBA-FIISB|31.1	No	RHEL 8
+2168	1016429	3.4.3.8 Ensure nftables rules are permanent - output	Non-Compliant		UAT	Check Name: 3.4.3.8 Ensure nftables rules are permanent - output
+
+Information: nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames.
+
+The nftables service reads the /etc/sysconfig/nftables.conf file for a nftables file or files to include in the nftables ruleset.
+
+An nftables ruleset containing the input, forward, and output base chains allow network traffic to be filtered.
+
+Rationale:
+
+Changes made to nftables ruleset only affect the live system, you will also need to configure the nftables ruleset to apply on boot.
+
+Result: FAILED
+
+Actual Value: The command '[[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook output/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'' did not return any result
+
+Policy Value: cmd: [[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook output/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'
+expect: pass
+system: Linux
+
+Solution: Edit the /etc/sysconfig/nftables.conf file and un-comment or add a line with include <Absolute path to nftables rules file> for each nftables file you want included in the nftables ruleset on boot
+Example:
+
+# vi /etc/sysconfig/nftables.conf
+
+Add the line:
+
+include '/etc/nftables/nftables.rules'
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.8,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
+2169	1016430	3.4.3.8 Ensure nftables rules are permanent - forward	Non-Compliant		UAT	Check Name: 3.4.3.8 Ensure nftables rules are permanent - forward
+
+Information: nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames.
+
+The nftables service reads the /etc/sysconfig/nftables.conf file for a nftables file or files to include in the nftables ruleset.
+
+An nftables ruleset containing the input, forward, and output base chains allow network traffic to be filtered.
+
+Rationale:
+
+Changes made to nftables ruleset only affect the live system, you will also need to configure the nftables ruleset to apply on boot.
+
+Result: FAILED
+
+Actual Value: The command '[[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook forward/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'' did not return any result
+
+Policy Value: cmd: [[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook forward/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'
+expect: pass
+system: Linux
+
+Solution: Edit the /etc/sysconfig/nftables.conf file and un-comment or add a line with include <Absolute path to nftables rules file> for each nftables file you want included in the nftables ruleset on boot
+Example:
+
+# vi /etc/sysconfig/nftables.conf
+
+Add the line:
+
+include '/etc/nftables/nftables.rules'
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.8,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
+2170	1016431	3.4.3.8 Ensure nftables rules are permanent - input	Non-Compliant		UAT	Check Name: 3.4.3.8 Ensure nftables rules are permanent - input
+
+Information: nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames.
+
+The nftables service reads the /etc/sysconfig/nftables.conf file for a nftables file or files to include in the nftables ruleset.
+
+An nftables ruleset containing the input, forward, and output base chains allow network traffic to be filtered.
+
+Rationale:
+
+Changes made to nftables ruleset only affect the live system, you will also need to configure the nftables ruleset to apply on boot.
+
+Result: FAILED
+
+Actual Value: The command '[[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook input/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'' did not return any result
+
+Policy Value: cmd: [[ -n $(/usr/bin/grep -E ""^\s*include"" /etc/sysconfig/nftables.conf) ]] && /usr/bin/awk '/hook input/,/}/' $(/usr/bin/awk '$1 ~ /^\s*include/ { gsub(""\"""","""",$2);print $2 }' /etc/sysconfig/nftables.conf) | /usr/bin/awk '{print} END {if (NR > 0) print ""pass""; else print ""fail""}'
+expect: pass
+system: Linux
+
+Solution: Edit the /etc/sysconfig/nftables.conf file and un-comment or add a line with include <Absolute path to nftables rules file> for each nftables file you want included in the nftables ruleset on boot
+Example:
+
+# vi /etc/sysconfig/nftables.conf
+
+Add the line:
+
+include '/etc/nftables/nftables.rules'
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.8,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
+2171	1016432	3.4.3.6 Ensure nftables default deny firewall policy - Chain INPUT	Non-Compliant		UAT	Check Name: 3.4.3.6 Ensure nftables default deny firewall policy - Chain INPUT
+
+Information: Base chain policy is the default verdict that will be applied to packets reaching the end of the chain.
+
+Rationale:
+
+There are two policies: accept (Default) and drop. If the policy is set to accept, the firewall will accept any packet that is not configured to be denied and the packet will continue transversing the network stack.
+
+It is easier to white list acceptable usage than to black list unacceptable usage.
+
+Impact:
+
+if configuring nftables over ssh, creating a base chain with a policy of drop will cause loss of connectivity.
+
+Ensure that a rule allowing ssh has been added to the base chain prior to setting the base chain's policy to drop
+
+Result: FAILED
+
+Actual Value: The command '/usr/sbin/nft list ruleset | /usr/bin/grep 'hook input'' returned : 
+
+type filter hook input priority filter; policy accept;
+		type filter hook input priority filter; policy accept;
+
+Policy Value: cmd: /usr/sbin/nft list ruleset | /usr/bin/grep 'hook input'
+expect: ^type[\s]+filter[\s]+hook[\s]+input[\s]+priority[\s]+0;[\s]*policy[\s]+drop;
+system: Linux
+
+Solution: Run the following command for the base chains with the input, forward, and output hooks to implement a default DROP policy:
+
+# nft chain <table family> <table name> <chain name> { policy drop ; }
+
+Example:
+
+# nft chain inet filter input { policy drop ; }
+# nft chain inet filter forward { policy drop ; }
+# nft chain inet filter output { policy drop ; }
+
+Default Value:
+
+accept
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.6,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
+2172	1016433	3.4.3.6 Ensure nftables default deny firewall policy - Chain OUTPUT	Non-Compliant		UAT	Check Name: 3.4.3.6 Ensure nftables default deny firewall policy - Chain OUTPUT
+
+Information: Base chain policy is the default verdict that will be applied to packets reaching the end of the chain.
+
+Rationale:
+
+There are two policies: accept (Default) and drop. If the policy is set to accept, the firewall will accept any packet that is not configured to be denied and the packet will continue transversing the network stack.
+
+It is easier to white list acceptable usage than to black list unacceptable usage.
+
+Impact:
+
+if configuring nftables over ssh, creating a base chain with a policy of drop will cause loss of connectivity.
+
+Ensure that a rule allowing ssh has been added to the base chain prior to setting the base chain's policy to drop
+
+Result: FAILED
+
+Actual Value: The command '/usr/sbin/nft list ruleset | /usr/bin/grep 'hook output'' returned : 
+
+type filter hook output priority filter; policy accept;
+		type filter hook output priority filter; policy accept;
+
+Policy Value: cmd: /usr/sbin/nft list ruleset | /usr/bin/grep 'hook output'
+expect: ^type[\s]+filter[\s]+hook[\s]+output[\s]+priority[\s]+0;[\s]*policy[\s]+drop;
+system: Linux
+
+Solution: Run the following command for the base chains with the input, forward, and output hooks to implement a default DROP policy:
+
+# nft chain <table family> <table name> <chain name> { policy drop ; }
+
+Example:
+
+# nft chain inet filter input { policy drop ; }
+# nft chain inet filter forward { policy drop ; }
+# nft chain inet filter output { policy drop ; }
+
+Default Value:
+
+accept
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.6,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
+2173	1016434	3.4.3.6 Ensure nftables default deny firewall policy - Chain FORWARD	Non-Compliant		UAT	Check Name: 3.4.3.6 Ensure nftables default deny firewall policy - Chain FORWARD
+
+Information: Base chain policy is the default verdict that will be applied to packets reaching the end of the chain.
+
+Rationale:
+
+There are two policies: accept (Default) and drop. If the policy is set to accept, the firewall will accept any packet that is not configured to be denied and the packet will continue transversing the network stack.
+
+It is easier to white list acceptable usage than to black list unacceptable usage.
+
+Impact:
+
+if configuring nftables over ssh, creating a base chain with a policy of drop will cause loss of connectivity.
+
+Ensure that a rule allowing ssh has been added to the base chain prior to setting the base chain's policy to drop
+
+Result: FAILED
+
+Actual Value: The command '/usr/sbin/nft list ruleset | /usr/bin/grep 'hook forward'' returned : 
+
+type filter hook forward priority filter; policy accept;
+		type filter hook forward priority filter; policy accept;
+
+Policy Value: cmd: /usr/sbin/nft list ruleset | /usr/bin/grep 'hook forward'
+expect: ^type[\s]+filter[\s]+hook[\s]+forward[\s]+priority[\s]+0;[\s]*policy[\s]+drop;
+system: Linux
+
+Solution: Run the following command for the base chains with the input, forward, and output hooks to implement a default DROP policy:
+
+# nft chain <table family> <table name> <chain name> { policy drop ; }
+
+Example:
+
+# nft chain inet filter input { policy drop ; }
+# nft chain inet filter forward { policy drop ; }
+# nft chain inet filter output { policy drop ; }
+
+Default Value:
+
+accept
+
+See Also: https://workbench.cisecurity.org/files/3366
+
+Reference Information: 800-171|3.13.1,800-53|SC-7(12),CIS_Recommendation|3.4.3.6,CN-L3|8.1.10.6(j),CSCv7|9.4,CSF|DE.CM-1,CSF|PR.AC-5,CSF|PR.DS-5,CSF|PR.PT-4,ISO/IEC-27001|A.13.1.3,ITSG-33|SC-7(12),LEVEL|1A,NESA|T4.5.4,NIAv2|AM38,NIAv2|SS13d,NIAv2|SS26,QCSC-v1|5.2.1,QCSC-v1|5.2.2,QCSC-v1|6.2,QCSC-v1|8.2.1,TBA-FIISB|43.1	No	RHEL 8
