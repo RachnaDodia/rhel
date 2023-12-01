@@ -4,7 +4,7 @@
     - name: 5.1.4
       block:
         - name: Check the severity for plugin 1000164 
-          shell: cat /root/compliance.csv |grep 1000164 |grep "Non Compliant"|awk -F, '{print $5}'
+          shell: cat /root/compliance.csv |grep 1000164 |grep "Non-Compliant"|awk -F, '{print $5}'
           register: result1
         - name: debug host for 1000164
           debug:
@@ -22,7 +22,7 @@
     - name: 5.1.7
       block:
         - name: Check the severity for plugin 1000167 
-          shell: cat /root/compliance.csv |grep 1000167 |grep "Non Compliant"|awk -F, '{print $5}'
+          shell: cat /root/compliance.csv |grep 1000167 |grep "Non-Compliant"|awk -F, '{print $5}'
           register: result1
         - name: debug host for 1000167
           debug:
