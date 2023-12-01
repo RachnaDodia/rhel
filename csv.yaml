@@ -31,6 +31,10 @@
           set_fact: 
            h: "{{ result1.stdout_lines }}" 
           when: result1.stdout_lines != []
+        - name: set host var1 for 1000167 
+          set_fact: 
+           rachna: hello 
+          when: result1.stdout_lines != []          
         - name: debug h for 1000167
           debug:
             var: rachna
