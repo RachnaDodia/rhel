@@ -1,5 +1,5 @@
 Sr No.,Plugin,Plugin Name,Severity,IP Address,Env,Plugin Output,PCIDSS,OS
-2154,1000164,5.1.4 Ensure permissions on /etc/cron.daily are configured,Non-Compliant,,UAT,"Check Name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
+2154,1000164,5.1.4 Ensure permissions on /etc/cron.daily are configured,Non-Compliant,192.168.140.120,UAT,"Check Name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
 
 Information: The /etc/cron.daily directory contains system cron jobs that need to run on a daily basis. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.
 
@@ -28,7 +28,7 @@ Solution: Run the following commands to set ownership and permissions on /etc/cr
 See Also: https://workbench.cisecurity.org/files/3366
 
 Reference Information: 800-171|3.4.2,800-53|CM-6b.,CIS_Recommendation|5.1.4,CN-L3|8.1.10.6(d),CSCv6|3.1,CSCv7|5.1,CSF|PR.IP-1,ITSG-33|CM-6b.,LEVEL|1A,NESA|T3.2.1,PCI-DSSv3.1|2.2.4,PCI-DSSv3.2|2.2.4,SWIFT-CSCv1|2.3",No,RHEL 8
-2155,1000167,5.1.7 Ensure permissions on /etc/cron.d are configured,Non-Compliant,,UAT,"Check Name: 5.1.7 Ensure permissions on /etc/cron.d are configured
+2155,1000167,5.1.7 Ensure permissions on /etc/cron.d are configured,Non-Compliant,192.168.140.120,UAT,"Check Name: 5.1.7 Ensure permissions on /etc/cron.d are configured
 
 Information: The /etc/cron.d directory contains system cron jobs that need to run in a similar manner to the hourly, daily weekly and monthly jobs from /etc/crontab , but require more granular control as to when they run. The files in this directory cannot be manipulated by the crontab command, but are instead edited by system administrators using a text editor. The commands below restrict read/write and search access to user and group root, preventing regular users from accessing this directory.
 
