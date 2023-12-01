@@ -33,6 +33,7 @@
           when: result1.stdout_lines != []
         - name: 5.1.7 Ensure permissions on /etc/cron.d are configured
           ping:
-          delegate_to: "{{ vars['h'] }}"
+          delegate_to: h
+          delegate_facts: true
           when: result1.stdout_lines != []
       ignore_errors: true 
