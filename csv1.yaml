@@ -1,19 +1,19 @@
 ---
 - hosts: all
   tasks:
-    - name: c1
+    - name: 5.1.4
       block:
-        - name: check 1
-          shell: cat /root/compliance.csv |grep 1000309 |grep "Non Compliant"|awk -F, '{print $4}'
+        - name: Check the severity for plugin 1000164 
+          shell: cat /root/compliance.csv |grep 1000164 |grep "Non Compliant"|awk -F, '{print $5}'
           register: result1
-        - name: debug var
+        - name: debug host
           debug:
             var: result1
         - name: check 
           set_fact: 
             h: "{{ result1.stdout_lines }}" 
           when: result1.stdout_lines != []
-        - name: remediate
+        - name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
           debug:
             var: h
           delegate_to: h
