@@ -30,14 +30,7 @@
         - name: set host var for 1000167 
           set_fact: 
            h: "{{ result1.stdout_lines }}" 
-          when: result1.stdout_lines != []
-        - name: set host var1 for 1000167 
-          set_fact: 
-           rachna: hello 
-          when: result1.stdout_lines != []          
-        - name: debug h for 1000167
-          debug:
-            var: rachna
+          when: result1.stdout_lines != []       
         - name: 5.1.7 Ensure permissions on /etc/cron.d are configured
           ping:
           delegate_to: "{{ h[0] }}"
