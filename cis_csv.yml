@@ -1,0 +1,45 @@
+---
+- hosts: all
+  tasks:
+    - name: 5.1.4
+      block:
+        - name: Check the severity for plugin 1000164 
+          shell: cat /root/compliance.csv |grep 1000164 |grep "Non Compliant"|awk -F, '{print $5}'
+          register: result1
+        - name: debug host for 1000164
+          debug:
+            var: result1
+        - name: set host var for 1000164 
+          set_fact: 
+            h: "{{ result1.stdout_lines }}" 
+          when: result1.stdout_lines != []
+        - name: 5.1.4 Ensure permissions on /etc/cron.daily are configured
+          ansible.builtin.file:
+            path: /etc/cron.daily
+            owner: root
+            group: root
+            mode: og-rwx
+          delegate_to: h
+          when: result1.stdout_lines != []
+      ignore_errors: true  
+    - name: 5.1.7
+      block:
+        - name: Check the severity for plugin 1000167 
+          shell: cat /root/compliance.csv |grep 1000167 |grep "Non Compliant"|awk -F, '{print $5}'
+          register: result1
+        - name: debug host for 1000167
+          debug:
+            var: result1
+        - name: set host var for 1000167 
+          set_fact: 
+            h: "{{ result1.stdout_lines }}" 
+          when: result1.stdout_lines != []
+        - name: 5.1.7 Ensure permissions on /etc/cron.d are configured
+          ansible.builtin.file:
+            path: /etc/cron.d
+            owner: root
+            group: root
+            mode: og-rwx
+          delegate_to: h
+          when: result1.stdout_lines != []
+      ignore_errors: true 
