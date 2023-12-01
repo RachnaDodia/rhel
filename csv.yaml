@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: 192.168.40.119
   tasks:
     - name: 5.1.4
       block:
