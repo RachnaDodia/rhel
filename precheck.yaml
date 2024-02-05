@@ -1,6 +1,6 @@
 ---
 - name: Precheck server
-  hosts: "{{ ip }}"
+  hosts: all
   tasks:
    - name: Give execute permission to precheck  script
      shell: chmod 777 precheck.sh
