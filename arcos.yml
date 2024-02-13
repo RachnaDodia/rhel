@@ -1,0 +1,11 @@
+---
+- name: building inventory
+  hosts: all
+  tasks:
+    - name: show this is working
+      shell: "cat /etc/redhat-release"
+      register: ifg
+
+    - name: debugging the output
+      debug:
+        msg: "{{ ifg }}"
