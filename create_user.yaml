@@ -6,6 +6,10 @@
      comment: "John Doe"
      uid: 1040
      password: "{{ 'rachna' | password_hash('sha512') }}"
+  - name: create file 
+    ansible.builtin.file:
+      path: /tmp/rach
+      state: touch
   - name: Change file ownership, group and permissions
     file:
      path: /tmp/rach
