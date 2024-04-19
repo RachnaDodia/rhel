@@ -1,0 +1,20 @@
+---
+- name: Harden the system
+  hosts: "{{ host }}"
+  tasks:
+  - name: Ensure latest version of snmpd service is installed
+    yum:
+     name: net-snmp
+     state: latest
+  - name: Ensure latest version of HTTPD is installed
+    yum:
+     name: httpd
+     state: latest
+  - name: Set the snmpd service to automatic start on boot
+    service:
+     name: snmpd
+     enabled: yes
+    ignore_errors: yes
+  - name: Ensure NIS Client is not installed
+    yum:
+     name: ypbind
