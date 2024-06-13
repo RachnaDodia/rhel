@@ -1,5 +1,5 @@
 ---
-- name: Enable intranet services
+- name: Apache server installed
   hosts: all
   tasks:
    - name: latest version of httpd installed
