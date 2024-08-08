@@ -6,12 +6,12 @@
   tasks:
     - name: start an instance with a public IP address
       amazon.aws.ec2_instance:
-        name: "SBI_Demo_Instance"
+        name: "HDFC_Demo_Instance"
         region: "us-east-1"
-        key_name: vj-aaponaws-aug2024
-        vpc_subnet_id: subnet-048b2268abfa580d7
+        key_name: ansible
+        vpc_subnet_id: subnet-0f258d835b99f4f8c
         instance_type: t2.micro
-        security_group: sg-0c6749691e58d7305
+        security_group: sg-09c9ce9090a9d72df
         network:
           assign_public_ip: true
         image_id: ami-0583d8c7a9c35822c
