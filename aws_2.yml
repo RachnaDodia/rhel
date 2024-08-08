@@ -6,6 +6,7 @@
   gather_facts: False
   tasks:
     - name: create a VPC
+      ansible_python_interpreter: /usr/bin/python3
       amazon.aws.ec2_vpc_net:
         name: Module_dev2
         cidr_block: 10.0.0.0/16
@@ -14,6 +15,7 @@
         tenancy: dedicated
       register: vpc
     - name: Create subnet
+      ansible_python_interpreter: /usr/bin/python3
       amazon.aws.ec2_vpc_subnet:
         state: present
         vpc_id: "{{ vpc.vpc.id }}"
@@ -22,6 +24,7 @@
       register: subnet
 
     - name: Create Security Group
+      ansible_python_interpreter: /usr/bin/python3
       ec2_group:
         state: present
         name: demo-security-group
