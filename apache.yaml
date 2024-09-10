@@ -1,6 +1,6 @@
 ---
 - name: Apache server installed
-  hosts: all
+  hosts: node1
   tasks:
    - name: latest version of httpd installed
      yum:
