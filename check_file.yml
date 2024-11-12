@@ -1,0 +1,17 @@
+- name: Check if a file exists in a directory
+  hosts: all  
+  tasks:
+    - name: Check if the file exists
+      ansible.builtin.stat:
+        path: /home/ec2-user/apps/retail 
+      register: file_check
+
+    - name: Display message if file exists
+      ansible.builtin.debug:
+        msg: "The file exists."
+      when: file_check.stat.exists
+
+    - name: Display message if file does not exist
+      ansible.builtin.debug:
+        msg: "The file does not exist."
+      when: not file_check.stat.exists
