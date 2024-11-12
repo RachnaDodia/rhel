@@ -7,5 +7,5 @@
    - name: Precheck
      shell: ./precheck.sh
      args:
-       chdir: /root
+       chdir: /home/ec2-user
      ignore_errors: yes
