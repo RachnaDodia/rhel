@@ -1,4 +1,4 @@
-- name: Check if a file exists in a directory
+- name: Check if a Configuration file for retail application exists
   hosts: all  
   tasks:
     - name: Check if the file exists
@@ -8,10 +8,10 @@
 
     - name: Display message if file exists
       ansible.builtin.debug:
-        msg: "The file exists."
+        msg: "Configuration file for retail application exists"
       when: file_check.stat.exists
 
     - name: Display message if file does not exist
       ansible.builtin.debug:
-        msg: "The file does not exist."
+        msg: "Configuration file for retail application  does not exist."
       when: not file_check.stat.exists
