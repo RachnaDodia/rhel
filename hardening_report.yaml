@@ -12,8 +12,11 @@
       register: file_status
 
     - name: Check if chronyd is running
-      service_facts:
-      register: chronyd_status
+      service:
+        name: chronyd
+        state: started
+      register: chronyd_status       
+      check_mode: yes
 
     - name: Check secure SSH configuration
       lineinfile:
@@ -31,7 +34,7 @@
           SELinux Enabled,{{ selinux_status.stdout }}
           /etc/passwd File Permissions,{{ file_status.stat.mode }}
           Secure SSH Configured,{{ 'Permit Root Login is enabled' if ssh_status.changed == false else 'Permit Root Login is disabled' }}
-          Chornyd service status,{{ 'Running' if chronyd_status.ansible_facts.services.chronyd.service.state == running else 'not running' }}
+          Chornyd service status,{{ 'Chronyd service is running' if chronyd_status.changed == false else 'Chronyd service is disabled' }}
         dest: /tmp/compliance_report.csv
 
     - name: Display the generated report
