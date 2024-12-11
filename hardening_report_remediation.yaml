@@ -1,0 +1,24 @@
+---
+- name: Compliance Remediation for RHEL Server
+  hosts: all
+  tasks:
+    - name: Set SELinux status to enforce
+      command: getenforce
+      register: selinux_status
+
+    - name: Set file permissions
+      file:
+        path: /etc/passwd
+        mode: '0644'
+
+    - name: Check if chronyd is running
+      service:
+        name: chronyd
+        state: started
+
+    - name: Configure secure SSH configuration
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
