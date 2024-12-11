@@ -11,9 +11,9 @@
         path: /etc/passwd
       register: file_status
 
-    - name: Check if firewalld is running
+    - name: Check if chronyd is running
       service_facts:
-      register: firewalld_status
+      register: chronyd_status
 
     - name: Check secure SSH configuration
       lineinfile:
@@ -30,7 +30,7 @@
           Hardening Point,Status
           SELinux Enabled,{{ selinux_status.stdout }}
           /etc/passwd File Permissions,{{ file_status.stat.mode }}
-          Firewall Running,{{ 'Active' if 'firewalld' in firewalld_status.services and firewalld_status.services['firewalld']['state'] == 'running' else 'Inactive' }}
+          chronyd Running,{{ 'Active' if 'chronyd' in chronyd_status.services and chronyd_status.services['chronyd']['state'] == 'running' else 'Inactive' }}
           Secure SSH Configured,{{ 'Compliant' if ssh_status.changed == false else 'Non-Compliant' }}
         dest: /tmp/compliance_report.csv
 
