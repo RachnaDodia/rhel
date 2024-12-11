@@ -30,7 +30,8 @@
           Hardening Point,Status
           SELinux Enabled,{{ selinux_status.stdout }}
           /etc/passwd File Permissions,{{ file_status.stat.mode }}
-          Secure SSH Configured,{{ 'Compliant' if ssh_status.changed == false else 'Non-Compliant' }}
+          Secure SSH Configured,{{ 'Permit Root Login is enabled' if ssh_status.changed == false else 'Permit Root Login is disabled' }}
+          Chornyd service status,{{ 'Running' if chronyd_status.ansible_facts.services.chronyd.service.state == running else 'not running' }}
         dest: /tmp/compliance_report.csv
 
     - name: Display the generated report
