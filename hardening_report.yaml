@@ -30,7 +30,6 @@
           Hardening Point,Status
           SELinux Enabled,{{ selinux_status.stdout }}
           /etc/passwd File Permissions,{{ file_status.stat.mode }}
-#          chronyd Running,{{ 'Active' if 'chronyd' in chronyd_status.services and chronyd_status.services['chronyd']['state'] == 'running' else 'Inactive' }}
           Secure SSH Configured,{{ 'Compliant' if ssh_status.changed == false else 'Non-Compliant' }}
         dest: /tmp/compliance_report.csv
 
