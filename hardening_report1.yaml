@@ -32,7 +32,7 @@
         content: |
           Hardening Point,Value,Compliance Status
           SELinux Enabled,{{ selinux_status.stdout }},{{ 'Compliant' if selinux_status.stdout == 'Enforcing' else 'Non Compliant' }}
-          /etc/passwd File Permissions,{{ file_status.stat.mode }},{{ 'Compliant' if file_status.stat.mode == abc else 'Non Compliant' }}
+          /etc/passwd File Permissions,{{ file_status.stat.mode }},{{ 'Compliant' if file_status.stat.mode == '0644' else 'Non Compliant' }}
           Secure SSH Configured,{{ 'Permit Root Login is enabled' if ssh_status.changed == false else 'Permit Root Login is disabled' }},{{ 'Compliant' if ssh_status.changed == false else 'Non Compliant' }}
           Chornyd service status,{{ 'Chronyd service is running' if chronyd_status.changed == false else 'Chronyd service is disabled' }},{{ 'Compliant' if chronyd_status.changed == false else 'Non Compliant' }}
         dest: /tmp/compliance_report.csv
