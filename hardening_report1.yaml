@@ -1,0 +1,42 @@
+---
+- name: Compliance Report for RHEL Server
+  hosts: all
+  tasks:
+    - name: Check SELinux status
+      command: getenforce
+      register: selinux_status
+
+    - name: Check file permissions
+      stat:
+        path: /etc/passwd
+      register: file_status
+
+    - name: Check if chronyd is running
+      service:
+        name: chronyd
+        state: started
+      register: chronyd_status       
+      check_mode: yes
+
+    - name: Check secure SSH configuration
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: "PermitRootLogin no"
+      register: ssh_status
+      check_mode: yes
+
+
+    - name: Create compliance report CSV
+      copy:
+        content: |
+          Hardening Point,Value,Compliance Status
+          SELinux Enabled,{{ selinux_status.stdout }},{{ 'Compliant' if selinux_status.stdout == Enforcing else 'Non Compliant' }}
+          /etc/passwd File Permissions,{{ file_status.stat.mode }},{{ 'Compliant' if file_status.stat.mode == 0644 else 'Non Compliant' }}
+          Secure SSH Configured,{{ 'Permit Root Login is enabled' if ssh_status.changed == false else 'Permit Root Login is disabled' }},{{ 'Compliant' if ssh_status.changed == false else 'Non Compliant' }}
+          Chornyd service status,{{ 'Chronyd service is running' if chronyd_status.changed == false else 'Chronyd service is disabled' }},{{ 'Compliant' if chronyd_status.changed == false else 'Non Compliant' }}
+        dest: /tmp/compliance_report.csv
+
+    - name: Display the generated report
+      debug:
+        msg: "Compliance report has been created at /tmp/compliance_report.csv"
