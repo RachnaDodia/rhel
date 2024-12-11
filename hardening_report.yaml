@@ -1,0 +1,45 @@
+---
+- name: Compliance Report for RHEL Server
+  hosts: all
+  tasks:
+    - name: Check SELinux status
+      command: getenforce
+      register: selinux_status
+
+    - name: Check file permissions
+      stat:
+        path: /etc/passwd
+      register: file_status
+
+    - name: Check if firewalld is running
+      service_facts:
+      register: firewalld_status
+
+    - name: Check secure SSH configuration
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        line: "PermitRootLogin no"
+      register: ssh_status
+      check_mode: yes
+
+    - name: Check existence of user
+      ansible.builtin.getent:
+        database: passwd
+        key: admin
+      register: user_status
+
+    - name: Create compliance report CSV
+      copy:
+        content: |
+          Hardening Point,Status
+          SELinux Enabled,{{ selinux_status.stdout }}
+          /etc/passwd File Permissions,{{ file_status.stat.mode }}
+          Firewall Running,{{ 'Active' if 'firewalld' in firewalld_status.services and firewalld_status.services['firewalld']['state'] == 'running' else 'Inactive' }}
+          Secure SSH Configured,{{ 'Compliant' if ssh_status.changed == false else 'Non-Compliant' }}
+          User Admin Exists,{{ 'Exists' if user_status.found else 'Missing' }}
+        dest: /tmp/compliance_report.csv
+
+    - name: Display the generated report
+      debug:
+        msg: "Compliance report has been created at /tmp/compliance_report.csv"
