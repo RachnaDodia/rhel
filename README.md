@@ -4,6 +4,11 @@ userdel -r johnd
 
 
 iops:
+[ec2-user@node1 ~]$ lsblk -o NAME,HCTL,SIZE,VENDOR,MODEL
+NAME        HCTL SIZE VENDOR MODEL
+nvme0n1           50G        Amazon Elastic Block Store              
+├─nvme0n1p1        1M        
+└─nvme0n1p2       50G     
 
 [ec2-user@node1 ~]$  iostat -dx 1 2
 
