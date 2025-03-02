@@ -1,0 +1,8 @@
+---
+- name: capture iops
+  hosts: all
+  tasks:
+    - name: Get IOPS data from iostat
+      ansible.builtin.shell: "iostat -dx 1 2 | awk '/sda/ {print $2}' | tail -1"
+      register: iops_result
+      changed_when: false
