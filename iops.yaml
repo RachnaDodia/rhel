@@ -22,5 +22,5 @@
         msg: "IOPS(w/s) for nvme0n1 is {{ iopsws_result.stdout }}"    
     - name: Check if IOPS(w/s) exceeds threshold of 10
       ansible.builtin.debug:
-        msg: "ALERT! IOPS has exceeded the threshold og 10: {{ iopsws_result.stdout }}"
+        msg: "ALERT! IOPS has exceeded the threshold of 10: {{ iopsws_result.stdout }}"
       when: iopsws_result.stdout|float > 10  # Replace 1000 with your threshold
