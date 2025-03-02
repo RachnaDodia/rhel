@@ -8,8 +8,8 @@
       changed_when: false
     - name: Display IOPS(r/s) 
       ansible.builtin.debug:
-      msg: "IOPS(r/s) for nvme0n1 is {{ iops_result.stdout }}"    
+        msg: "IOPS(r/s) for nvme0n1 is {{ iops_result.stdout }}"    
     - name: Check if IOPS(r/s) exceeds threshold of 1.3
       ansible.builtin.debug:
-      msg: "ALERT! IOPS has exceeded the threshold: {{ iops_result.stdout }}"
+        msg: "ALERT! IOPS has exceeded the threshold: {{ iops_result.stdout }}"
       when: iops_result.stdout|float > 1.3  # Replace 1000 with your threshold
