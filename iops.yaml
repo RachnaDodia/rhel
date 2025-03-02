@@ -2,7 +2,14 @@
 - name: capture iops
   hosts: all
   tasks:
-    - name: Get IOPS data from iostat
+    - name: Get IOPS data from iostat (Read requests per second)
       ansible.builtin.shell: "iostat -dx 1 2 | awk '/nvme0n1/ {print $2}' | tail -n +1 | head -n 1"
       register: iops_result
       changed_when: false
+    - name: Display IOPS(r/s) 
+      ansible.builtin.debug:
+      msg: "IOPS(r/s) for nvme0n1 is {{ iops_result.stdout }}"    
+    - name: Check if IOPS(r/s) exceeds threshold of 1.3
+      ansible.builtin.debug:
+      msg: "ALERT! IOPS has exceeded the threshold: {{ iops_result.stdout }}"
+      when: iops_result.stdout|float > 1.3  # Replace 1000 with your threshold
