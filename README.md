@@ -23,5 +23,9 @@ nvme0n1          0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.0
 100000+0 records in
 100000+0 records out
 409600000 bytes (410 MB, 391 MiB) copied, 0.392877 s, 1.0 GB/s
+
+sudo dd if=/dev/zero of=/mnt/testfile bs=4k count=100000 oflag=direct
+[ec2-user@node1 ~]$ iostat -dx 1 2 
+
 [ec2-user@node1 ~]$ iostat -dx 1 2 | awk '/nvme0n1/ {print $2}' | tail -n +1 | head -n 1
 1.37
