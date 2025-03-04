@@ -3,8 +3,11 @@ check user - vi /etc/passwd
 userdel -r johnd
 
 iops:
+
 ssh node1
+
 sudo dnf install -y sysstat 
+
  sudo systemctl enable --now sysstat
 
 
