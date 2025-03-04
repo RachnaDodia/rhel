@@ -20,6 +20,7 @@ Device            r/s     w/s     rkB/s     wkB/s   rrqm/s   wrqm/s  %rrqm  %wrq
 nvme0n1          0.00    0.00      0.00      0.00     0.00     0.00   0.00   0.00    0.00    0.00   0.00     0.00     0.00   0.00   0.00
 
 [ec2-user@node1 ~]$ sudo dd if=/dev/zero of=/mnt/testfile bs=4k count=100000
+
 100000+0 records in
 100000+0 records out
 409600000 bytes (410 MB, 391 MiB) copied, 0.392877 s, 1.0 GB/s
