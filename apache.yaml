@@ -12,7 +12,7 @@
       state: latest
    - name: test html page is installed
      copy:
-      content: "Happy Working on Prod Server\n"
+      content: "Good Afternoon UCO Bank\n"
       dest: /var/www/html/index.html
    - name: firewalld enabled and running
      service:
