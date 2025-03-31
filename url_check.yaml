@@ -5,22 +5,22 @@
   sources:
      - ansible.eda.url_check:
         urls:
-          - http://webserver
+          - http://node1
         delay: 10
 
   rules:
     ## Define the conditions we are looking for 
-    - name: Web site is up
-      condition: event.url_check.status == "up"
+#    - name: Web site is up
+#      condition: event.url_check.status == "up"
     ## Define the action we should take should the condition be met  
-      action:
-        run_playbook:
-          name: wowza.yml
+#      action:
+#        run_playbook:
+#          name: apache.yml
 
     - name: Web site is down
       condition: event.url_check.status == "down"
     ## Define the action we should take should the condition be met  
       action:
-        run_playbook:
-          name: fix_web.yml
+        run_template:
+          name: Deployapache
 
