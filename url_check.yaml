@@ -7,6 +7,7 @@
         urls:
           - http://node1
         delay: 10
+        return_content: true
 
   rules:
     ## Define the conditions we are looking for 
@@ -21,6 +22,7 @@
       condition: event.url_check.status == "down"
     ## Define the action we should take should the condition be met  
       action:
-        run_template:
+        run_job_template:
           name: Deployapache
+          organization: "Default"
 
