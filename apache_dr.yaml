@@ -1,0 +1,12 @@
+---
+- name: Apache server installed
+  hosts: node2
+  tasks:
+   - name: latest version of httpd installed
+     yum:
+      name: httpd
+      state: latest
+   - name: latest version of firewalld installed
+     yum:
+      name: firewalld
+      state: latest
