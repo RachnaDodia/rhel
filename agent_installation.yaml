@@ -4,7 +4,7 @@
   become: true
 
   vars:
-    zabbix_server_ip: "192.168.0.177"    # <-- Change to your real Zabbix server IP
+    zabbix_server_ip: "192.168.0.177"    # <-- Change to your ansible node 2 ip address-but of rhel 8 os
     zabbix_agent_version: "6.0"           # <-- LTS version at time of writing
 
   tasks:
@@ -46,3 +46,4 @@
         name: zabbix-agent
         enabled: yes
         state: started
+
