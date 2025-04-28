@@ -1,12 +1,24 @@
 ---
-- name: Apache server installed
+- name: Fetch index.html from node1
   hosts: node1
   tasks:
-   - name: test html page is installed
-     synchronize:
-      src: /var/www/html/index.html     
-      dest: /var/www/html/index.html  
-     delegate_to: node2
+    - name: Fetch file from node1
+      fetch:
+        src: /var/www/html/index.html
+        dest: /tmp/index.html
+        flat: yes
+
+- name: Copy index.html to node2
+  hosts: node2
+  tasks:
+    - name: Copy file to node2
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index.html
+
+- name: Start the services at DR
+  hosts: node1
+  tasks:
    - name: firewalld enabled and running
      service:
       name: firewalld
