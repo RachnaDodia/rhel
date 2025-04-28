@@ -1,0 +1,29 @@
+---
+- name: Apache server installed
+  hosts: node1
+  tasks:
+   - name: test html page is installed
+     copy:
+      src: /var/www/html/index.html     
+      dest: /var/www/html/index.html  
+      remote_src: no
+     delegate_to: node2
+   - name: firewalld enabled and running
+     service:
+      name: firewalld
+      enabled: true
+      state: started
+     delegate_to: node2      
+   - name: firewalld permits http service
+     firewalld:
+      service: http
+      permanent: true
+      state: enabled
+      immediate: yes
+     delegate_to: node2
+   - name: httpd enabled and running
+     service:
+      name: httpd
+      enabled: true
+      state: started
+     delegate_to: node2
