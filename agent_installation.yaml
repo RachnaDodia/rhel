@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Zabbix agent on RHEL
-  hosts: all
+  hosts: all  #limit to node2 in job template
   become: true
 
   vars:
