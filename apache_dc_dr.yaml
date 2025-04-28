@@ -3,10 +3,9 @@
   hosts: node1
   tasks:
    - name: test html page is installed
-     copy:
+     synchronize:
       src: /var/www/html/index.html     
       dest: /var/www/html/index.html  
-      remote_src: no
      delegate_to: node2
    - name: firewalld enabled and running
      service:
