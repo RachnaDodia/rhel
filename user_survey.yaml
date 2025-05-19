@@ -4,3 +4,4 @@
   - user:
      name: "{{ user }}"
      uid: 1040
+     password: "{{ pas }}"
