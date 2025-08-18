@@ -1,0 +1,39 @@
+---
+- name: Purge or compress old logs
+  hosts: all
+  become: yes
+  vars:
+    log_dir: /var/log        # directory where logs are stored
+    purge_days: 20           # delete logs older than 30 days
+    compress_days: 7         # compress logs older than 7 days
+
+  tasks:
+    - name: Find logs older than {{ purge_days }} days to purge
+      ansible.builtin.find:
+        paths: "{{ log_dir }}"
+        age: "{{ purge_days }}d"
+        patterns: "*.log"
+      register: old_logs
+
+    - name: Purge old logs
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ old_logs.files }}"
+      when: old_logs.matched > 0
+
+    - name: Find logs older than {{ compress_days }} days to compress
+      ansible.builtin.find:
+        paths: "{{ log_dir }}"
+        age: "{{ compress_days }}d"
+        patterns: "*.log"
+      register: compress_logs
+
+    - name: Compress old logs
+      ansible.builtin.archive:
+        path: "{{ item.path }}"
+        dest: "{{ item.path }}.tar.gz"
+        format: gz
+        remove: yes   # remove original after compression
+      loop: "{{ compress_logs.files }}"
+      when: compress_logs.matched > 0
