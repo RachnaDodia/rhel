@@ -14,7 +14,7 @@
     - name: Install required packages
       ansible.builtin.yum:
         name:
-          - java-11-openjdk
+          - java-11-openjdk-headless
           - unzip
           - tar
         state: present
