@@ -1,3 +1,4 @@
+touch /tmp/server_stats.txt
 clear > /tmp/server_stats.txt
 echo -e "\n########### IP Address of server ########" >> /tmp/server_stats.txt
 ip r l >> /tmp/server_stats.txt
