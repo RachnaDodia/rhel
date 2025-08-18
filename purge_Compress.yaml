@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars:
-    log_dir: /var/log        # directory where logs are stored
+    log_dir: /var/log/testlogs       # directory where logs are stored
     purge_days: 20           # delete logs older than 30 days
     compress_days: 7         # compress logs older than 7 days
 
