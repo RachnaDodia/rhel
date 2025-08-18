@@ -1,0 +1,32 @@
+---
+- name: Create sample log files for testing compression
+  hosts: all
+  become: yes
+  vars:
+    log_dir: /var/log/testlogs
+    sample_files:
+      - app1.log
+      - app2.log
+      - app3.log
+
+  tasks:
+    - name: Ensure log directory exists
+      ansible.builtin.file:
+        path: "{{ log_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create sample log files
+      ansible.builtin.copy:
+        dest: "{{ log_dir }}/{{ item }}"
+        content: |
+          This is a sample log file: {{ item }}
+          Created on {{ ansible_date_time.date }} at {{ ansible_date_time.time }}.
+          Line 1: Debugging info
+          Line 2: Error details
+          Line 3: Warning message
+      loop: "{{ sample_files }}"
+
+    - name: Touch app3.log to make it older than 10 days
+      ansible.builtin.command: >
+        touch -d "10 days ago" {{ log_dir }}/app3.log
