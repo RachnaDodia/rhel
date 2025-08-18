@@ -27,6 +27,6 @@
           Line 3: Warning message
       loop: "{{ sample_files }}"
 
-    - name: Touch app3.log to make it older than 10 days
+    - name: Touch app3.log to make it older than 30 days
       ansible.builtin.command: >
-        touch -d "10 days ago" {{ log_dir }}/app3.log
+        touch -d "30 days ago" {{ log_dir }}/app3.log
