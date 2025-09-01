@@ -15,7 +15,7 @@
         patterns: "*.log"
       register: old_logs
 
-    - name: Purge old logs
+    - name: Purge logs older than 20 days
       ansible.builtin.file:
         path: "{{ item.path }}"
         state: absent
