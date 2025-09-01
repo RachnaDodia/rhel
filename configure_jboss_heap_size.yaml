@@ -1,0 +1,19 @@
+---
+- name: Update JBoss JVM heap size
+  hosts: all
+  become: true
+  vars:
+    jboss_home: /opt/jboss-eap/jboss-eap-7.4
+
+  tasks:
+    - name: Set Xmx to 1024m in standalone.conf
+      lineinfile:
+        path: "{{ jboss_home }}/bin/standalone.conf"
+        regexp: '^-Xmx[0-9]+m'
+        line: '    -Xmx1024m \'
+        backrefs: yes
+
+    - name: Restart JBoss service
+      systemd:
+        name: jboss-eap
+        state: restarted
