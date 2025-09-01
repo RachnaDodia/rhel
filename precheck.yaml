@@ -1,6 +1,6 @@
 ---
 - name: Precheck server
-  hosts: "{{ host }}"
+  hosts: all
   tasks:
    - name: Give execute permission to precheck  script
      shell: chmod 777 /home/ec2-user/precheck.sh
