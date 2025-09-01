@@ -21,16 +21,10 @@
           - java-11-openjdk
         state: absent
 
-    - name: Create jboss group
-      group:
-        name: "{{ jboss_group }}"
-        state: absent
-
     
-    - name: Enable JBoss service
+    - name: Disable JBoss service
       systemd:
         name: "{{ jboss_service_name }}"
-        enabled: yes
+        enabled: no
         state: stopped
-
         state: restarted
