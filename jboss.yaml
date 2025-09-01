@@ -1,0 +1,107 @@
+---
+- name: Deploy JBoss EAP on RHEL 8.7
+  hosts: jboss_servers
+  become: true
+  vars:
+    jboss_user: jboss
+    jboss_group: jboss
+    jboss_home: /opt/jboss-eap
+    jboss_version: 7.4
+    jboss_zip: jboss-eap-7.4.0.zip   # Path to EAP zip (can be copied from control node)
+    jboss_service_name: jboss-eap
+    jboss_bind_address: 0.0.0.0
+    jboss_management_port: 9990
+    jboss_http_port: 8080
+
+  tasks:
+    - name: Ensure required packages are installed
+      yum:
+        name:
+          - unzip
+          - java-11-openjdk
+        state: present
+
+    - name: Create jboss group
+      group:
+        name: "{{ jboss_group }}"
+        state: present
+
+    - name: Create jboss user
+      user:
+        name: "{{ jboss_user }}"
+        group: "{{ jboss_group }}"
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Create JBoss installation directory
+      file:
+        path: "{{ jboss_home }}"
+        state: directory
+        owner: "{{ jboss_user }}"
+        group: "{{ jboss_group }}"
+
+    - name: Copy JBoss EAP zip to target
+      copy:
+        src: "{{ jboss_zip }}"
+        dest: "/tmp/{{ jboss_zip }}"
+        mode: '0644'
+
+    - name: Extract JBoss EAP
+      unarchive:
+        src: "/tmp/{{ jboss_zip }}"
+        dest: "{{ jboss_home }}"
+        remote_src: yes
+        owner: "{{ jboss_user }}"
+        group: "{{ jboss_group }}"
+
+    - name: Set JAVA_HOME for JBoss
+      lineinfile:
+        path: /etc/environment
+        line: "JAVA_HOME=/usr/lib/jvm/jre-11-openjdk"
+        create: yes
+
+    - name: Configure JBoss systemd service
+      copy:
+        dest: /etc/systemd/system/{{ jboss_service_name }}.service
+        content: |
+          [Unit]
+          Description=JBoss EAP Application Server
+          After=network.target
+
+          [Service]
+          Type=simple
+          User={{ jboss_user }}
+          Group={{ jboss_group }}
+          ExecStart={{ jboss_home }}/jboss-eap-{{ jboss_version }}/bin/standalone.sh -b={{ jboss_bind_address }} -bmanagement={{ jboss_bind_address }}
+          Restart=on-failure
+          Environment=JAVA_HOME=/usr/lib/jvm/jre-11-openjdk
+
+          [Install]
+          WantedBy=multi-user.target
+      notify: restart jboss
+
+    - name: Open firewalld ports for JBoss
+      firewalld:
+        port: "{{ item }}/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop:
+        - "{{ jboss_http_port }}"
+        - "{{ jboss_management_port }}"
+
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable JBoss service
+      systemd:
+        name: "{{ jboss_service_name }}"
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: restart jboss
+      systemd:
+        name: "{{ jboss_service_name }}"
+        state: restarted
