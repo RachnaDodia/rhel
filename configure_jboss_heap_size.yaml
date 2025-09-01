@@ -1,17 +1,17 @@
----
-- name: Update JBoss JVM heap size
+- name: Update JVM options in JBoss standalone.conf
   hosts: all
   become: true
   vars:
     jboss_home: /opt/jboss-eap/jboss-eap-7.4
+    new_xms: 512m
+    new_xmx: 1024m
 
   tasks:
-    - name: Set Xmx to 1024m in standalone.conf
-      lineinfile:
+    - name: Set custom JAVA_OPTS
+      replace:
         path: "{{ jboss_home }}/bin/standalone.conf"
-        regexp: '^-Xmx[0-9]+m'
-        line: '    -Xmx1024m \'
-        backrefs: yes
+        regexp: '^-Xms[0-9]+m -Xmx[0-9]+m'
+        replace: "-Xms{{ new_xms }} -Xmx{{ new_xmx }}"
 
     - name: Restart JBoss service
       systemd:
