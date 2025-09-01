@@ -30,3 +30,6 @@
     - name: Touch app3.log to make it older than 30 days
       ansible.builtin.command: >
         touch -d "30 days ago" {{ log_dir }}/app3.log
+    - name: Touch app2.log to make it older than 10 days
+      ansible.builtin.command: >
+        touch -d "10 days ago" {{ log_dir }}/app2.log
