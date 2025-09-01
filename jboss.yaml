@@ -40,11 +40,11 @@
         owner: "{{ jboss_user }}"
         group: "{{ jboss_group }}"
 #copy jboss-eap-7.4.0.zip  from downloads to target machine /tmp folder
-    - name: Copy JBoss EAP zip to target
-      copy:
-        src: "{{ jboss_zip }}"
-        dest: "/tmp/{{ jboss_zip }}"
-        mode: '0644'
+#    - name: Copy JBoss EAP zip to target
+#      copy:
+#        src: "{{ jboss_zip }}"
+#        dest: "/tmp/{{ jboss_zip }}"
+#        mode: '0644'
 
     - name: Extract JBoss EAP
       unarchive:
