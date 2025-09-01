@@ -1,0 +1,36 @@
+---
+- name: Rollback changes by JBoss EAP on RHEL 8.7
+  hosts: all
+  become: true
+  vars:
+    jboss_user: jboss
+    jboss_group: jboss
+    jboss_home: /opt/jboss-eap
+    jboss_version: 7.4
+    jboss_zip: jboss-eap-7.4.0.zip   # Path to EAP zip (can be copied from control node)
+    jboss_service_name: jboss-eap
+    jboss_bind_address: 0.0.0.0
+    jboss_management_port: 9990
+    jboss_http_port: 8080
+
+  tasks:
+    - name: Ensure required packages are uninstalled
+      yum:
+        name:
+          - unzip
+          - java-11-openjdk
+        state: absent
+
+    - name: Create jboss group
+      group:
+        name: "{{ jboss_group }}"
+        state: absent
+
+    
+    - name: Enable JBoss service
+      systemd:
+        name: "{{ jboss_service_name }}"
+        enabled: yes
+        state: stopped
+
+        state: restarted
