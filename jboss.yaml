@@ -79,6 +79,18 @@
           [Install]
           WantedBy=multi-user.target
       notify: restart jboss
+    - name: Ensure firewalld and python3-firewall are installed
+      yum:
+        name:
+          - firewalld
+          - python3-firewall
+        state: present
+
+    - name: Ensure firewalld is running
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
 
     - name: Open firewalld ports for JBoss
       firewalld:
