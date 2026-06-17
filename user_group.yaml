@@ -1,0 +1,29 @@
+---
+- name: Create group and user on RHEL
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create group
+      ansible.builtin.group:
+        name: "{{ group_name }}"
+        state: present
+
+    - name: Create user and assign to group
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        group: "{{ group_name }}"
+        password: "{{ user_password | password_hash('sha512') }}"
+        create_home: true
+        shell: /bin/bash
+        state: present
+
+    - name: Verify user membership
+      ansible.builtin.command:
+        cmd: "id {{ user_name }}"
+      register: user_info
+      changed_when: false
+
+    - name: Display user details
+      ansible.builtin.debug:
+        msg: "{{ user_info.stdout }}"
