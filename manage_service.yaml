@@ -1,0 +1,31 @@
+---
+- name: Install and manage a service
+  hosts: all
+  become: true
+
+  vars:
+    package_name: httpd
+    service_name: httpd
+    service_state: started
+
+  tasks:
+    - name: Install package
+      ansible.builtin.package:
+        name: "{{ package_name }}"
+        state: present
+
+    - name: Enable and manage service
+      ansible.builtin.service:
+        name: "{{ service_name }}"
+        enabled: true
+        state: "{{ service_state }}"
+
+    - name: Verify service status
+      ansible.builtin.command:
+        cmd: systemctl is-active {{ service_name }}
+      register: service_status
+      changed_when: false
+
+    - name: Display service status
+      ansible.builtin.debug:
+        msg: "Service {{ service_name }} is {{ service_status.stdout }}"
