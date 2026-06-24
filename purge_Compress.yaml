@@ -28,12 +28,9 @@
         age: "{{ compress_days }}d"
         patterns: "*.log"
       register: compress_logs
-
     - name: Compress old logs
-      ansible.builtin.archive:
-        path: "{{ item.path }}"
-        dest: "{{ item.path }}.tar.gz"
-        format: gz
-        remove: yes   # remove original after compression
+      ansible.builtin.command:
+        cmd: gzip -f {{ item.path }}
       loop: "{{ compress_logs.files }}"
       when: compress_logs.matched > 0
+
