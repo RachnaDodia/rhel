@@ -4,29 +4,36 @@
   become: true
   vars:
     zabbix_server_ip: "192.168.0.177"   # <-- Zabbix server / proxy IP
-    zabbix_agent_version: "7.0"         # <-- verify this version ships a repo for your RHEL major version
+    zabbix_agent_version: "7.4"         # <-- 7.4 is the branch with el10 builds; check repo.zabbix.com if this changes
 
   tasks:
     - name: Show detected OS
       debug:
         msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }}"
 
-    - name: Check if Zabbix repo package is already configured
-      stat:
-        path: /etc/yum.repos.d/zabbix.repo
-      register: zabbix_repo_file
-
-    - name: Install Zabbix repository
+    - name: Remove any stale/mismatched Zabbix repo package
       yum:
-        name: "https://repo.zabbix.com/zabbix/{{ zabbix_agent_version }}/rhel/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ zabbix_agent_version }}-1.el{{ ansible_distribution_major_version }}.noarch.rpm"
+        name: zabbix-release
+        state: absent
+
+    - name: Remove stale zabbix.repo file if present
+      file:
+        path: /etc/yum.repos.d/zabbix.repo
+        state: absent
+
+    - name: Clean dnf cache
+      command: dnf clean all
+      changed_when: false
+
+    - name: Install correct Zabbix repository for this OS
+      yum:
+        name: "https://repo.zabbix.com/zabbix/{{ zabbix_agent_version }}/release/rhel/{{ ansible_distribution_major_version }}/noarch/zabbix-release-latest.el{{ ansible_distribution_major_version }}.noarch.rpm"
         state: present
         disable_gpg_check: yes
-      when: not zabbix_repo_file.stat.exists
 
-    - name: Clean yum cache after repo install
-      command: yum clean all
+    - name: Clean dnf cache after repo install
+      command: dnf clean all
       changed_when: false
-      when: not zabbix_repo_file.stat.exists
 
     - name: Install Zabbix Agent 2
       yum:
