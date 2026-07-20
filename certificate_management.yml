@@ -1,0 +1,72 @@
+---
+- name: Download and manage CA certificates on RHEL
+  hosts: all
+  become: yes
+
+  vars:
+    cert_url: "https://curl.se/ca/cacert.pem"
+    cert_file: "/etc/pki/ca-trust/source/anchors/mozilla-ca-bundle.pem"
+    backup_dir: "/var/backups/certificates"
+
+  tasks:
+
+    - name: Create backup directory
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Check if certificate already exists
+      ansible.builtin.stat:
+        path: "{{ cert_file }}"
+      register: cert_status
+
+    - name: Backup existing certificate
+      ansible.builtin.copy:
+        src: "{{ cert_file }}"
+        dest: "{{ backup_dir }}/mozilla-ca-bundle-{{ ansible_date_time.date }}.pem"
+        remote_src: yes
+      when: cert_status.stat.exists
+
+    - name: Download latest Mozilla CA bundle
+      ansible.builtin.get_url:
+        url: "{{ cert_url }}"
+        dest: "{{ cert_file }}"
+        owner: root
+        group: root
+        mode: "0644"
+        force: yes
+
+    - name: Update RHEL CA trust
+      ansible.builtin.command: update-ca-trust
+
+    - name: Verify downloaded file exists
+      ansible.builtin.stat:
+        path: "{{ cert_file }}"
+      register: downloaded
+
+    - name: Display certificate file size
+      ansible.builtin.debug:
+        msg: "Downloaded certificate bundle size: {{ downloaded.stat.size }} bytes"
+
+    - name: Count certificates in bundle
+      ansible.builtin.shell: |
+        grep -c "BEGIN CERTIFICATE" {{ cert_file }}
+      register: cert_count
+      changed_when: false
+
+    - name: Show number of certificates
+      ansible.builtin.debug:
+        msg: "CA bundle contains {{ cert_count.stdout }} certificates"
+
+    - name: Calculate SHA256 checksum
+      ansible.builtin.command:
+        cmd: sha256sum {{ cert_file }}
+      register: checksum
+      changed_when: false
+
+    - name: Display checksum
+      ansible.builtin.debug:
+        var: checksum.stdout
