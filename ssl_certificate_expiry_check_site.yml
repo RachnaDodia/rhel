@@ -121,7 +121,8 @@
     - name: "Initialize report rows list"
       ansible.builtin.set_fact:
         report_rows: []
-
+    - debug:
+      var: cert_results.results[0]
     - name: "Build report rows from successful certificate results"
       ansible.builtin.set_fact:
         report_rows: "{{ report_rows + [{
