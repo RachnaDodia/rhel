@@ -1,0 +1,11 @@
+# SSL Certificate Report
+
+Created At: {{ report_created_at }}
+
+Legend: 🟢 `> {{ warn_days }} days` / ⚠️ `{{ critical_days + 1 }}-{{ warn_days }} days` / 🚨 `1-{{ critical_days }} days` / ☠️ `<= 0 days`
+
+| Domain | Expiration (Beijing time) | Days Left | Status |
+|--------|-------------------|----------:|:------:|
+{% for row in (report_rows | default([])) %}
+| {{ row.domain }} | {{ row.expires_at }} | {{ row.days_left }} | {{ row.emoji }} |
+{% endfor %}
