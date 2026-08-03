@@ -1,0 +1,235 @@
+---
+- name: Install Apache Tomcat 10 on RHEL 9.5
+  hosts: tomcat
+  become: yes
+  gather_facts: yes
+
+  vars:
+    tomcat_version: "10.1.42"
+    tomcat_url: "https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.42/bin/apache-tomcat-10.1.42.tar.gz"
+
+    tomcat_install_dir: /opt/tomcat
+    tomcat_user: tomcat
+    tomcat_group: tomcat
+
+    java_package: java-17-openjdk
+
+    http_port: 8080
+
+  tasks:
+
+########################################################################
+# Verify OS
+########################################################################
+
+    - name: Verify RHEL version
+      assert:
+        that:
+          - ansible_distribution == "RedHat"
+          - ansible_distribution_major_version == "9"
+        fail_msg: "Only RHEL 9.x is supported."
+
+########################################################################
+# Install Java
+########################################################################
+
+    - name: Install Java
+      dnf:
+        name:
+          - "{{ java_package }}"
+          - tar
+          - firewalld
+        state: present
+
+########################################################################
+# Enable Firewalld
+########################################################################
+
+    - name: Start firewalld
+      service:
+        name: firewalld
+        enabled: yes
+        state: started
+
+########################################################################
+# Create User
+########################################################################
+
+    - name: Create Tomcat group
+      group:
+        name: "{{ tomcat_group }}"
+        state: present
+
+    - name: Create Tomcat user
+      user:
+        name: "{{ tomcat_user }}"
+        group: "{{ tomcat_group }}"
+        shell: /sbin/nologin
+        home: "{{ tomcat_install_dir }}"
+        create_home: no
+
+########################################################################
+# Download Tomcat
+########################################################################
+
+    - name: Download Apache Tomcat
+      get_url:
+        url: "{{ tomcat_url }}"
+        dest: /tmp/tomcat.tar.gz
+        mode: '0644'
+
+########################################################################
+# Create Installation Directory
+########################################################################
+
+    - name: Create installation directory
+      file:
+        path: "{{ tomcat_install_dir }}"
+        state: directory
+        mode: '0755'
+
+########################################################################
+# Extract Tomcat
+########################################################################
+
+    - name: Extract Tomcat
+      unarchive:
+        src: /tmp/tomcat.tar.gz
+        dest: "{{ tomcat_install_dir }}"
+        remote_src: yes
+        extra_opts:
+          - --strip-components=1
+
+########################################################################
+# Permissions
+########################################################################
+
+    - name: Set ownership
+      file:
+        path: "{{ tomcat_install_dir }}"
+        owner: "{{ tomcat_user }}"
+        group: "{{ tomcat_group }}"
+        recurse: yes
+
+########################################################################
+# Make scripts executable
+########################################################################
+
+    - name: Set execute permission on scripts
+      file:
+        path: "{{ tomcat_install_dir }}/bin"
+        mode: "0755"
+        recurse: yes
+
+########################################################################
+# Create systemd service
+########################################################################
+
+    - name: Create Tomcat service
+      copy:
+        dest: /etc/systemd/system/tomcat.service
+        mode: '0644'
+        content: |
+          [Unit]
+          Description=Apache Tomcat
+          After=network.target
+
+          [Service]
+          Type=forking
+
+          User={{ tomcat_user }}
+          Group={{ tomcat_group }}
+
+          Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk"
+
+          Environment="CATALINA_PID={{ tomcat_install_dir }}/temp/tomcat.pid"
+
+          Environment="CATALINA_HOME={{ tomcat_install_dir }}"
+          Environment="CATALINA_BASE={{ tomcat_install_dir }}"
+
+          ExecStart={{ tomcat_install_dir }}/bin/startup.sh
+          ExecStop={{ tomcat_install_dir }}/bin/shutdown.sh
+
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+########################################################################
+# Reload systemd
+########################################################################
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+########################################################################
+# Open Firewall
+########################################################################
+
+    - name: Open HTTP Port
+      firewalld:
+        port: "{{ http_port }}/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+########################################################################
+# Start Tomcat
+########################################################################
+
+    - name: Enable and Start Tomcat
+      service:
+        name: tomcat
+        state: started
+        enabled: yes
+
+########################################################################
+# Wait
+########################################################################
+
+    - name: Wait for Tomcat
+      wait_for:
+        port: "{{ http_port }}"
+        timeout: 180
+
+########################################################################
+# Verify
+########################################################################
+
+    - name: Verify Tomcat
+      uri:
+        url: http://localhost:8080
+        status_code: 200
+      register: tomcat_status
+
+    - name: Display Status
+      debug:
+        msg:
+          - "Tomcat installed successfully."
+          - "HTTP Status : {{ tomcat_status.status }}"
+          - "Application URL : http://{{ ansible_default_ipv4.address }}:8080"
+
+########################################################################
+# Deploy Sample WAR (Optional)
+########################################################################
+
+    - name: Deploy sample application
+      copy:
+        src: sample.war
+        dest: "{{ tomcat_install_dir }}/webapps/sample.war"
+        owner: "{{ tomcat_user }}"
+        group: "{{ tomcat_group }}"
+      ignore_errors: yes
+
+########################################################################
+# Display Version
+########################################################################
+
+    - name: Display Tomcat Version
+      shell: "{{ tomcat_install_dir }}/bin/version.sh | grep 'Server version'"
+      register: version
+      changed_when: false
+
+    - debug:
+        var: version.stdout
