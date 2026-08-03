@@ -1,6 +1,6 @@
 ---
 - name: Install Apache Tomcat 10 on RHEL 9.5
-  hosts: tomcat
+  hosts: all
   become: yes
   gather_facts: yes
 
